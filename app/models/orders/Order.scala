@@ -13,6 +13,10 @@ case class HoldOrder(provinceId: ProvinceId) extends Order
 
 case class MoveOrder(provinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
 
-case class ConvoyOrder(provinceId: ProvinceId, moveOrder: MoveOrder) extends Order
+case class ConvoyOrder(provinceId: ProvinceId, sourceProvinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
 
-case class SupportOrder(provinceId: ProvinceId, order: Order) extends Order
+case class SupportOrder(provinceId: ProvinceId, sourceProvinceId: ProvinceId, targetProvinceId: Option[ProvinceId] = None) extends Order
+
+case class RetreatOrder(provinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
+
+case class DisbandOrder(provinceId: ProvinceId) extends Order

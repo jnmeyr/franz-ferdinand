@@ -49,6 +49,18 @@ class OrdersScannerSpec extends FlatSpec with Matchers {
     OrdersScanner("SUPPORTS") should be (Some(List(OrderKindOrderToken(Support))))
     OrdersScanner("s") should be (Some(List(OrderKindOrderToken(Support))))
     OrdersScanner("S") should be (Some(List(OrderKindOrderToken(Support))))
+
+    OrdersScanner("retreats") should be (Some(List(OrderKindOrderToken(Retreat))))
+    OrdersScanner("Retreats") should be (Some(List(OrderKindOrderToken(Retreat))))
+    OrdersScanner("RETREATS") should be (Some(List(OrderKindOrderToken(Retreat))))
+    OrdersScanner("r") should be (Some(List(OrderKindOrderToken(Retreat))))
+    OrdersScanner("R") should be (Some(List(OrderKindOrderToken(Retreat))))
+
+    OrdersScanner("disbands") should be (Some(List(OrderKindOrderToken(Disband))))
+    OrdersScanner("Disbands") should be (Some(List(OrderKindOrderToken(Disband))))
+    OrdersScanner("DISBANDS") should be (Some(List(OrderKindOrderToken(Disband))))
+    OrdersScanner("d") should be (Some(List(OrderKindOrderToken(Disband))))
+    OrdersScanner("D") should be (Some(List(OrderKindOrderToken(Disband))))
   }
 
   "The orders scanner" should "be able to scan province id tokens" in {
@@ -62,16 +74,12 @@ class OrdersScannerSpec extends FlatSpec with Matchers {
   }
 
   "The orders scanner" should "be able to scan correct tokens" in {
-    OrdersScanner("f ber h") should be
-      Some(List(UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Hold)))
-    OrdersScanner("Army Stp-Nc - Ber") should be
-      Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Move), ProvinceIdOrderToken(Ber)))
-    OrdersScanner("Stp-Nc C Stp M Stp-Sc") should be
-      Some(List(ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Convoy), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(StpSc)))
-    OrdersScanner("ARMY BER SUPPORTS FLEET STP MOVES KIE") should be
-      Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Support), UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(Kie)))
-    OrdersScanner("ARMY\tBER\nSUPPORTS\rFLEET  \f  \n   \r  \t   STP") should be
-     Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Support), UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Stp)))
+    OrdersScanner("f ber h") should be (Some(List(UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Hold))))
+    OrdersScanner("Army Stp-Nc - Ber") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Move), ProvinceIdOrderToken(Ber))))
+    OrdersScanner("Stp-Nc C Stp M Stp-Sc") should be (Some(List(ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Convoy), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(StpSc))))
+    OrdersScanner("ARMY BER SUPPORTS FLEET STP MOVES KIE") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Support), UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(Kie))))
+    OrdersScanner("ARMY\tBER\rRetreats  \n       stp") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Retreat), ProvinceIdOrderToken(Stp))))
+    OrdersScanner("ska\n\n\n\n\n\n\n\nd") should be (Some(List(ProvinceIdOrderToken(Ska), OrderKindOrderToken(Disband))))
   }
 
   "The orders scanner" should "not be able to scan wrong tokens" in {

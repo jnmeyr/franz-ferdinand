@@ -10,6 +10,8 @@ object OrderKind extends Enumeration {
   val Move    = Value("M")
   val Convoy  = Value("C")
   val Support = Value("S")
+  val Retreat = Value("R")
+  val Disband = Value("D")
 
   implicit val orderKindFormat = new Format[OrderKind] {
 

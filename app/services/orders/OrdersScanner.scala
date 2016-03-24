@@ -29,6 +29,10 @@ object OrdersScanner extends OrdersScanners {
       Some(OrderKindOrderToken(Convoy))
     } else if ("supports".equalsIgnoreCase(word) || "s".equalsIgnoreCase(word)) {
       Some(OrderKindOrderToken(Support))
+    } else if ("retreats".equalsIgnoreCase(word) || "r".equalsIgnoreCase(word)) {
+      Some(OrderKindOrderToken(Retreat))
+    } else if ("disbands".equalsIgnoreCase(word) || "d".equalsIgnoreCase(word)) {
+      Some(OrderKindOrderToken(Disband))
     } else {
       None
     }

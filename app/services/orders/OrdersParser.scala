@@ -67,7 +67,7 @@ object OrdersParser extends OrdersParsers {
 
   }
 
-  private val holdOrderParser: Parser[HoldOrder] = unitKindParser.? ~> provinceIdParser <~ orderKindParser(Hold) ^^ {
+  private val holdOrderParser: Parser[HoldOrder] = unitKindParser.? ~> provinceIdParser <~ orderKindParser(Hold).? ^^ {
     case provinceId => HoldOrder(provinceId)
   }
 
@@ -76,14 +76,27 @@ object OrdersParser extends OrdersParsers {
   }
 
   private val convoyOrderParser: Parser[ConvoyOrder] = (unitKindParser(Fleet).? ~> provinceIdParser <~ orderKindParser(Convoy)) ~ moveOrderParser ^^ {
-    case provinceId ~ moveOrder => ConvoyOrder(provinceId, moveOrder)
+    case provinceId ~ MoveOrder(sourceProvinceId, targetProvinceId) => ConvoyOrder(provinceId, sourceProvinceId, targetProvinceId)
   }
 
-  private val supportOrderParser: Parser[SupportOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Support)) ~ (holdOrderParser | moveOrderParser | convoyOrderParser) ^^ {
-    case provinceId ~ order => SupportOrder(provinceId, order)
+  private val supportOrderParser: Parser[SupportOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Support)) ~ (holdOrderParser ||| moveOrderParser ||| convoyOrderParser) ^^ {
+    case provinceId ~ order => order match {
+      case HoldOrder(sourceProvinceId) => SupportOrder(provinceId, sourceProvinceId)
+      case MoveOrder(sourceProvinceId, targetProvinceId) => SupportOrder(provinceId, sourceProvinceId, Some(targetProvinceId))
+      case ConvoyOrder(sourceProvinceId, _, _) => SupportOrder(provinceId, sourceProvinceId)
+      case _ => ???
+    }
   }
 
-  private val orderParser: Parser[Order] = holdOrderParser | moveOrderParser | convoyOrderParser | supportOrderParser
+  private val retreatOrderParser: Parser[RetreatOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Retreat)) ~ provinceIdParser ^^ {
+    case provinceId ~ targetProvinceId => RetreatOrder(provinceId, targetProvinceId)
+  }
+
+  private val disbandOrderParser: Parser[DisbandOrder] = unitKindParser.? ~> provinceIdParser <~ orderKindParser(Disband) ^^ {
+    case provinceId => DisbandOrder(provinceId)
+  }
+
+  private val orderParser: Parser[Order] = holdOrderParser ||| moveOrderParser ||| convoyOrderParser ||| supportOrderParser ||| retreatOrderParser ||| disbandOrderParser
 
   private val ordersParser: Parser[List[Order]] = orderParser.*
 
