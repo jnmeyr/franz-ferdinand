@@ -1,25 +1,25 @@
 package models.countries
 
-import play.api.libs.json._
+import models.countries.CountryId._
+import models.provinces.ProvinceId._
+import play.api.libs.json.Json
 
-object Country extends Enumeration {
+case class Country(kind: CountryId, provinces: List[ProvinceId])
 
-  type Country = Value
+object Country {
 
-  val Austria = Value("A")
-  val England = Value("E")
-  val France  = Value("F")
-  val Germany = Value("G")
-  val Italy   = Value("I")
-  val Russia  = Value("R")
-  val Turkey  = Value("T")
+  implicit val countryFormat = Json.format[Country]
 
-  implicit val countryFormat = new Format[Country] {
+  val austria = Country(Austria, List(Bud, Tri, Vie))
+  val england = Country(England, List(Edi, Lon, Lvp))
+  val france  = Country(France,  List(Bre, Mar, Par))
+  val germany = Country(Germany, List(Ber, Kie, Mun))
+  val italy   = Country(Italy,   List(Nap, Rom, Ven))
+  val russia  = Country(Russia,  List(Mos, Sev, Stp, War))
+  val turkey  = Country(Turkey,  List(Ank, Con, Smy))
 
-    def reads(jsValue: JsValue) = JsSuccess(Country.withName(jsValue.as[String]))
-
-    def writes(country: Country) = JsString(country.toString)
-
-  }
+  val countries: List[Country] = List(
+    austria, england, france, germany, italy, russia, turkey
+  )
 
 }
