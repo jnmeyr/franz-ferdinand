@@ -1,6 +1,6 @@
 package models.provinces
 
-import play.api.libs.json.{Format, JsString, JsSuccess, JsValue}
+import play.api.libs.json._
 
 object ProvinceKind extends Enumeration {
 
@@ -9,11 +9,11 @@ object ProvinceKind extends Enumeration {
   val Land  = Value("L")
   val Water = Value("W")
 
-  implicit val provinceKindFormat = new Format[ProvinceKind] {
+  implicit val provinceKindFormat: Format[ProvinceKind] = new Format[ProvinceKind] {
 
-    def reads(jsValue: JsValue) = JsSuccess(ProvinceKind.withName(jsValue.as[String]))
+    def reads(jsValue: JsValue): JsResult[ProvinceKind] = JsSuccess(ProvinceKind.withName(jsValue.as[String]))
 
-    def writes(provinceKind: ProvinceKind) = JsString(provinceKind.toString)
+    def writes(provinceKind: ProvinceKind): JsString = JsString(provinceKind.toString)
 
   }
 

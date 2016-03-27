@@ -14,11 +14,11 @@ object CountryId extends Enumeration {
   val Russia  = Value("R")
   val Turkey  = Value("T")
 
-  implicit val countryIdFormat = new Format[CountryId] {
+  implicit val countryIdFormat: Format[CountryId] = new Format[CountryId] {
 
-    def reads(jsValue: JsValue) = JsSuccess(CountryId.withName(jsValue.as[String]))
+    def reads(jsValue: JsValue): JsResult[CountryId] = JsSuccess(CountryId.withName(jsValue.as[String]))
 
-    def writes(countryId: CountryId) = JsString(countryId.toString)
+    def writes(countryId: CountryId): JsString = JsString(countryId.toString)
 
   }
 

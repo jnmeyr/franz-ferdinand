@@ -2,13 +2,13 @@ package models.countries
 
 import models.countries.CountryId._
 import models.provinces.ProvinceId._
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 
-case class Country(kind: CountryId, provinces: List[ProvinceId])
+case class Country(id: CountryId, provinces: List[ProvinceId])
 
 object Country {
 
-  implicit val countryFormat = Json.format[Country]
+  implicit val countryFormat: Format[Country] = Json.format[Country]
 
   val austria = Country(Austria, List(Bud, Tri, Vie))
   val england = Country(England, List(Edi, Lon, Lvp))

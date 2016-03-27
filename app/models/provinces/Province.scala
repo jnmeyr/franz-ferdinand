@@ -28,7 +28,7 @@ case class Province(id: ProvinceId, kind: ProvinceKind, routes: List[ProvinceId]
 
 object Province {
 
-  implicit val provinceFormat = Json.format[Province]
+  implicit val provinceFormat: Format[Province] = Json.format[Province]
 
   val adr:   Province = Province(Adr,   Water, Nil,                                     List(Alb, Apu, Ion, Tri, Ven))
   val aeg:   Province = Province(Aeg,   Water, Nil,                                     List(BulSc, Con, Eas, Gre, Ion, Smy))

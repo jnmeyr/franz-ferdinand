@@ -1,6 +1,6 @@
 name := """franz-ferdinand"""
 
-version := "0.0.1-alpha"
+version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -12,6 +12,7 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
+  filters,
   "org.scalatest" % "scalatest_2.11" % "2.2.6" % Test,
   "org.scalaz" %% "scalaz-core" % "7.2.1",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"

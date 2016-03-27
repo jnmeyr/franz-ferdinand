@@ -1,7 +1,8 @@
 package models.states
 
 import models.orders.Order
-import models.states.Time._
+import models.times.Time
+import Time._
 
 case class State(time: Time, orders: Option[List[Order]])
 
