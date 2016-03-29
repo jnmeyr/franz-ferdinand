@@ -24,6 +24,16 @@ class OrdersScannerSpec extends FlatSpec with Matchers {
     OrdersScanner("F") should be (Some(List(UnitKindOrderToken(Fleet))))
   }
 
+  "The orders scanner" should "be able to scan province id tokens" in {
+    OrdersScanner("ber") should be (Some(List(ProvinceIdOrderToken(Ber))))
+    OrdersScanner("Ber") should be (Some(List(ProvinceIdOrderToken(Ber))))
+    OrdersScanner("BER") should be (Some(List(ProvinceIdOrderToken(Ber))))
+
+    OrdersScanner("stp-nc") should be (Some(List(ProvinceIdOrderToken(StpNc))))
+    OrdersScanner("Stp-Nc") should be (Some(List(ProvinceIdOrderToken(StpNc))))
+    OrdersScanner("STP-NC") should be (Some(List(ProvinceIdOrderToken(StpNc))))
+  }
+
   "The orders scanner" should "be able to scan order kind tokens" in {
     OrdersScanner("holds") should be (Some(List(OrderKindOrderToken(Hold))))
     OrdersScanner("Holds") should be (Some(List(OrderKindOrderToken(Hold))))
@@ -61,19 +71,16 @@ class OrdersScannerSpec extends FlatSpec with Matchers {
     OrdersScanner("DISBANDS") should be (Some(List(OrderKindOrderToken(Disband))))
     OrdersScanner("d") should be (Some(List(OrderKindOrderToken(Disband))))
     OrdersScanner("D") should be (Some(List(OrderKindOrderToken(Disband))))
-  }
 
-  "The orders scanner" should "be able to scan province id tokens" in {
-    OrdersScanner("ber") should be (Some(List(ProvinceIdOrderToken(Ber))))
-    OrdersScanner("Ber") should be (Some(List(ProvinceIdOrderToken(Ber))))
-    OrdersScanner("BER") should be (Some(List(ProvinceIdOrderToken(Ber))))
-
-    OrdersScanner("stp-nc") should be (Some(List(ProvinceIdOrderToken(StpNc))))
-    OrdersScanner("Stp-Nc") should be (Some(List(ProvinceIdOrderToken(StpNc))))
-    OrdersScanner("STP-NC") should be (Some(List(ProvinceIdOrderToken(StpNc))))
+    OrdersScanner("builds") should be (Some(List(OrderKindOrderToken(Build))))
+    OrdersScanner("Builds") should be (Some(List(OrderKindOrderToken(Build))))
+    OrdersScanner("BUILDS") should be (Some(List(OrderKindOrderToken(Build))))
+    OrdersScanner("b") should be (Some(List(OrderKindOrderToken(Build))))
+    OrdersScanner("B") should be (Some(List(OrderKindOrderToken(Build))))
   }
 
   "The orders scanner" should "be able to scan correct tokens" in {
+    OrdersScanner("") should be (Some(Nil))
     OrdersScanner("f ber h") should be (Some(List(UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Hold))))
     OrdersScanner("Army Stp-Nc - Ber") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Move), ProvinceIdOrderToken(Ber))))
     OrdersScanner("Stp-Nc C Stp M Stp-Sc") should be (Some(List(ProvinceIdOrderToken(StpNc), OrderKindOrderToken(Convoy), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(StpSc))))
@@ -84,7 +91,6 @@ class OrdersScannerSpec extends FlatSpec with Matchers {
 
   "The orders scanner" should "not be able to scan wrong tokens" in {
     OrdersScanner(null) should be (None)
-    OrdersScanner("") should be (None)
     OrdersScanner("This is garbage") should be (None)
     OrdersScanner("ArmyHoldsBer") should be (None)
   }

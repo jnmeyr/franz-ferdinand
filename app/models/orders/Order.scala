@@ -1,7 +1,7 @@
 package models.orders
 
-import models.provinces.ProvinceId
-import ProvinceId.ProvinceId
+import models.provinces.ProvinceId._
+import models.units.UnitKind._
 
 sealed trait Order {
 
@@ -20,3 +20,5 @@ case class SupportOrder(provinceId: ProvinceId, sourceProvinceId: ProvinceId, ta
 case class RetreatOrder(provinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
 
 case class DisbandOrder(provinceId: ProvinceId) extends Order
+
+case class BuildOrder(provinceId: ProvinceId, unitKind: UnitKind) extends Order

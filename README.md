@@ -4,7 +4,7 @@ A diplomacy board game judge server in Scala.
 
 ### Version ###
 
-0.0.1-alpha
+0.0.1-SNAPSHOT
 
 ### Licence ###
 

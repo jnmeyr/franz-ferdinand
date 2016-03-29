@@ -20,6 +20,15 @@ object OrdersScanner extends OrdersScanners {
     }
   }
 
+  private def scanProvinceIdToken(word: String): Option[ProvinceIdOrderToken] = {
+    ProvinceId.values.filter(_.toString.equalsIgnoreCase(word)) match {
+      case values if values.size == 1 =>
+        Some(ProvinceIdOrderToken(values.head))
+      case _ =>
+        None
+    }
+  }
+
   private def scanOrderKindToken(word: String): Option[OrderKindOrderToken] = {
     if ("holds".equalsIgnoreCase(word) || "h".equalsIgnoreCase(word)) {
       Some(OrderKindOrderToken(Hold))
@@ -33,29 +42,24 @@ object OrdersScanner extends OrdersScanners {
       Some(OrderKindOrderToken(Retreat))
     } else if ("disbands".equalsIgnoreCase(word) || "d".equalsIgnoreCase(word)) {
       Some(OrderKindOrderToken(Disband))
+    } else if ("builds".equalsIgnoreCase(word) || "b".equalsIgnoreCase(word)) {
+      Some(OrderKindOrderToken(Build))
     } else {
       None
     }
   }
 
-  private def scanProvinceIdToken(word: String): Option[ProvinceIdOrderToken] = {
-    ProvinceId.values.filter(_.toString.equalsIgnoreCase(word)) match {
-      case values if values.size == 1 =>
-        Some(ProvinceIdOrderToken(values.head))
-      case _ =>
-        None
-    }
-  }
-
   private def scanToken(word: String): Option[OrderToken] = {
-    scanUnitKindToken(word) orElse scanOrderKindToken(word) orElse scanProvinceIdToken(word)
+    scanUnitKindToken(word) orElse scanProvinceIdToken(word) orElse scanOrderKindToken(word)
   }
 
   def apply(string: String): Option[List[OrderToken]] = {
     Option(string) match {
-      case Some(_) if string.nonEmpty =>
+      case Some(_) if string.isEmpty =>
+        Some(Nil)
+      case Some(_) =>
         string.split("\\s+").toList.map(scanToken).sequence[Option, OrderToken]
-      case _ =>
+      case None =>
         None
     }
   }
