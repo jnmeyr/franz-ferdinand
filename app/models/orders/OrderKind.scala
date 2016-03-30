@@ -14,12 +14,4 @@ object OrderKind extends Enumeration {
   val Disband = Value("D")
   val Build   = Value("B")
 
-  implicit val orderKindFormat: Format[OrderKind] = new Format[OrderKind] {
-
-    def reads(jsValue: JsValue): JsResult[OrderKind] = JsSuccess(OrderKind.withName(jsValue.as[String]))
-
-    def writes(orderKind: OrderKind): JsString = JsString(orderKind.toString)
-
-  }
-
 }

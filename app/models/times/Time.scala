@@ -2,9 +2,10 @@ package models.times
 
 import models.times.Phase._
 import models.times.Season._
+import models.times.Year.Year
 import play.api.libs.json.{Format, Json}
 
-case class Time(year: Int, season: Season, phase: Phase)
+case class Time(year: Year, season: Season, phase: Phase)
 
 object Time {
 

@@ -1,4 +1,5 @@
-GET  /:gameId/board  controllers.FranzFerdinand.board(gameId: Int)
-POST /:gameId/orders controllers.FranzFerdinand.orders(gameId: Int)
+GET  /:gameId/time      controllers.FranzFerdinand.time(gameId: Int)
+GET  /:gameId/provinces controllers.FranzFerdinand.provinces(gameId: Int)
+POST /:gameId/orders    controllers.FranzFerdinand.orders(gameId: Int)
 
-GET  /assets/*file   controllers.Assets.versioned(path="/public", file: Asset)
+GET  /assets/*file      controllers.Assets.versioned(path="/public", file: Asset)

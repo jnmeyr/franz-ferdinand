@@ -8,8 +8,6 @@ case class Country(id: CountryId, provinces: List[ProvinceId])
 
 object Country {
 
-  implicit val countryFormat: Format[Country] = Json.format[Country]
-
   val austria = Country(Austria, List(Bud, Tri, Vie))
   val england = Country(England, List(Edi, Lon, Lvp))
   val france  = Country(France,  List(Bre, Mar, Par))
