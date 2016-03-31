@@ -1,4 +1,4 @@
-package services.orders
+package services.orders.parsers
 
 import scala.language.implicitConversions
 import scala.util.parsing.input.{NoPosition, Position, Reader}
@@ -20,3 +20,4 @@ object ListReader {
   implicit def list2listReader[T >: Null <: AnyRef](list: List[T]): ListReader[T] = new ListReader[T](list)
 
 }
+

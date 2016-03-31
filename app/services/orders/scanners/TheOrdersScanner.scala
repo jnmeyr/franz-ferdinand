@@ -1,4 +1,4 @@
-package services.orders
+package services.orders.scanners
 
 import models.orders.OrderKind._
 import models.provinces.ProvinceId
@@ -6,9 +6,7 @@ import models.units.UnitKind._
 
 import scalaz.Scalaz._
 
-trait OrdersScanners
-
-object OrdersScanner extends OrdersScanners {
+class TheOrdersScanner extends OrdersScanner {
 
   private def scanUnitKindToken(word: String): Option[UnitKindOrderToken] = {
     if ("army".equalsIgnoreCase(word) || "a".equalsIgnoreCase(word)) {
@@ -53,7 +51,7 @@ object OrdersScanner extends OrdersScanners {
     scanUnitKindToken(word) orElse scanProvinceIdToken(word) orElse scanOrderKindToken(word)
   }
 
-  def apply(string: String): Option[List[OrderToken]] = {
+  def scan(string: String): Option[List[OrderToken]] = {
     Option(string) match {
       case Some(_) if string.isEmpty =>
         Some(Nil)

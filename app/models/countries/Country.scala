@@ -2,7 +2,6 @@ package models.countries
 
 import models.countries.CountryId._
 import models.provinces.ProvinceId._
-import play.api.libs.json.{Format, Json}
 
 case class Country(id: CountryId, provinces: List[ProvinceId])
 

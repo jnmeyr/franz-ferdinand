@@ -1,7 +1,5 @@
 package models.orders
 
-import play.api.libs.json._
-
 object OrderKind extends Enumeration {
 
   type OrderKind = Value

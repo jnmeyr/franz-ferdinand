@@ -1,19 +1,12 @@
-package services.orders
+package services.orders.parsers
 
-import models.orders._
-import models.units.UnitKind._
 import models.orders.OrderKind._
+import models.orders._
 import models.provinces.ProvinceId._
+import models.units.UnitKind._
+import services.orders.scanners._
 
-import scala.util.parsing.combinator._
-
-trait OrdersParsers extends Parsers {
-
-  type Elem = OrderToken
-
-}
-
-object OrdersParser extends OrdersParsers {
+class TheOrdersParser extends OrdersParser {
 
   private val unitKindParser: Parser[UnitKind] = new Parser[UnitKind] {
 
@@ -86,7 +79,7 @@ object OrdersParser extends OrdersParsers {
 
   private val ordersParser: Parser[List[Order]] = orderParser.*
 
-  def apply(tokens: ListReader[OrderToken]): Option[List[Order]] = {
+  def parse(tokens: ListReader[OrderToken]): Option[List[Order]] = {
     ordersParser(tokens) match {
       case Success(orders, input) if input.atEnd =>
         Some(orders)

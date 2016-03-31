@@ -1,9 +1,8 @@
-package services.orders
+package services.orders.scanners
 
-import models.units.UnitKind
-import UnitKind.UnitKind
 import models.orders.OrderKind.OrderKind
 import models.provinces.ProvinceId.ProvinceId
+import models.units.UnitKind.UnitKind
 
 sealed trait OrderToken
 
