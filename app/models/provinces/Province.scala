@@ -7,6 +7,8 @@ sealed trait Province {
 
   def id: ProvinceId
 
+  def supply: Boolean
+
   def routes: List[ProvinceId]
 
   def ways: List[ProvinceId]
@@ -31,15 +33,17 @@ sealed trait Province {
 
 }
 
-case class LandProvince(id: ProvinceId, routes: List[ProvinceId]) extends Province {
+case class LandProvince(id: ProvinceId, supply: Boolean, routes: List[ProvinceId]) extends Province {
 
   val ways: List[ProvinceId] = Nil
 
 }
 
-case class CoastProvince(id: ProvinceId, routes: List[ProvinceId], ways: List[ProvinceId]) extends Province
+case class CoastProvince(id: ProvinceId, supply: Boolean, routes: List[ProvinceId], ways: List[ProvinceId]) extends Province
 
 case class WaterProvince(id: ProvinceId, ways: List[ProvinceId]) extends Province {
+
+  val supply: Boolean = false
 
   val routes: List[ProvinceId] = Nil
 
@@ -47,95 +51,90 @@ case class WaterProvince(id: ProvinceId, ways: List[ProvinceId]) extends Provinc
 
 object Province {
 
-  val adr:   Province = WaterProvince(Adr,                                            List(Alb, Apu, Ion, Tri, Ven))
-  val aeg:   Province = WaterProvince(Aeg,                                            List(BulSc, Con, Eas, Gre, Ion, Smy))
-  val alb:   Province = CoastProvince(Alb,   List(Gre, Ser, Tri),                     List(Adr, Gre, Ion, Tri))
-  val ank:   Province = CoastProvince(Ank,   List(Arm, Con, Smy),                     List(Arm, Bla, Con))
-  val apu:   Province = CoastProvince(Apu,   List(Nap, Rom, Ven),                     List(Adr, Ion, Nap, Ven))
-  val arm:   Province = CoastProvince(Arm,   List(Ank, Sev, Smy, Syr),                List(Ank, Bla, Sev))
-  val bal:   Province = WaterProvince(Bal,                                            List(Ber, Bot, Den, Kie, Lvn, Pru, Swe))
-  val bar:   Province = WaterProvince(Bar,                                            List(Nor, Nwg, StpNc))
-  val bel:   Province = CoastProvince(Bel,   List(Bur, Hol, Pic, Ruh),                List(Eng, Hol, Nth, Pic))
-  val ber:   Province = CoastProvince(Ber,   List(Kie, Mun, Pru, Sil),                List(Bal, Kie, Pru))
-  val bla:   Province = WaterProvince(Bla,                                            List(Ank, Arm, BulEc, Con, Rum, Sev))
-  val boh:   Province = LandProvince (Boh,   List(Gal, Mun, Sil, Tyr, Vie))
-  val bot:   Province = WaterProvince(Bot,                                            List(Bal, Fin, Lvn, StpSc, Swe))
-  val bre:   Province = CoastProvince(Bre,   List(Gas, Par, Pic),                     List(Eng, Gas, Mao, Pic))
-  val bud:   Province = LandProvince (Bud,   List(Gal, Rum, Ser, Tri, Vie))
-  val bul:   Province = LandProvince (Bul,   List(Con, Gre, Rum, Ser))
-  val bulEc: Province = WaterProvince(BulEc,                                          List(Bla, Con, Rum))
-  val bulSc: Province = WaterProvince(BulSc,                                          List(Aeg, Con, Gre))
-  val bur:   Province = LandProvince (Bur,   List(Bel, Gas, Mar, Mun, Par, Pic, Ruh))
-  val cly:   Province = CoastProvince(Cly,   List(Edi, Lvp),                          List(Edi, Lvp, Nao, Nwg))
-  val con:   Province = CoastProvince(Con,   List(Ank, Bul, Smy),                     List(Aeg, Ank, Bla, BulEc, BulSc, Smy))
-  val den:   Province = CoastProvince(Den,   List(Kie, Swe),                          List(Bal, Hel, Kie, Nth, Ska, Swe))
-  val eas:   Province = WaterProvince(Eas,                                            List(Aeg, Ion, Smy, Syr))
-  val edi:   Province = CoastProvince(Edi,   List(Cly, Lvp, Yor),                     List(Cly, Nth, Nwg, Yor))
-  val eng:   Province = WaterProvince(Eng,                                            List(Bel, Bre, Iri, Lon, Mao, Nth, Pic, Wal))
-  val fin:   Province = CoastProvince(Fin,   List(Nor, Stp, Swe),                     List(Bot, StpSc, Swe))
-  val gal:   Province = LandProvince (Gal,   List(Boh, Bud, Rum, Sil, Ukr, Vie, War))
-  val gas:   Province = CoastProvince(Gas,   List(Bre, Bur, Mar, Par, Spa),           List(Bre, Mao, SpaNc))
-  val gre:   Province = CoastProvince(Gre,   List(Alb, Bul, Ser),                     List(Aeg, Alb, BulSc, Ion))
-  val hel:   Province = WaterProvince(Hel,                                            List(Den, Hol, Kie, Nth))
-  val hol:   Province = CoastProvince(Hol,   List(Bel, Kie, Ruh),                     List(Bel, Hel, Kie, Nth))
-  val ion:   Province = WaterProvince(Ion,                                            List(Adr, Aeg, Alb, Apu, Eas, Gre, Nap, Tun, Tys))
-  val iri:   Province = WaterProvince(Iri,                                            List(Eng, Lvp, Mao, Nao, Wal))
-  val kie:   Province = CoastProvince(Kie,   List(Ber, Den, Hol, Mun, Ruh),           List(Bal, Ber, Den, Hel, Hol))
-  val lon:   Province = CoastProvince(Lon,   List(Wal, Yor),                          List(Eng, Nth, Wal, Yor))
-  val lvn:   Province = CoastProvince(Lvn,   List(Mos, Pru, Stp, War),                List(Bal, Bot, Pru, StpSc))
-  val lvp:   Province = CoastProvince(Lvp,   List(Cly, Edi, Wal, Yor),                List(Cly, Iri, Nao, Wal))
-  val lyo:   Province = WaterProvince(Lyo,                                            List(Mar, Pie, SpaSc, Tus, Tys, Wes))
-  val mao:   Province = WaterProvince(Mao,                                            List(Bre, Eng, Gas, Iri, Naf, Nao, Por, SpaNc, SpaSc, Wes))
-  val mar:   Province = CoastProvince(Mar,   List(Bur, Gas, Pie, Spa),                List(Lyo, Pie, SpaSc))
-  val mos:   Province = LandProvince (Mos,   List(Lvn, Sev, Stp, Ukr, War))
-  val mun:   Province = LandProvince (Mun,   List(Ber, Boh, Bur, Kie, Ruh, Sil, Tyr))
-  val naf:   Province = CoastProvince(Naf,   List(Tun),                               List(Mao, Tun, Wes))
-  val nao:   Province = WaterProvince(Nao,                                            List(Cly, Iri, Lvp, Mao, Nwg))
-  val nap:   Province = CoastProvince(Nap,   List(Apu, Rom),                          List(Apu, Ion, Rom, Tys))
-  val nor:   Province = CoastProvince(Nor,   List(Fin, Stp, Swe),                     List(Bar, Nth, Nwg, Ska, StpNc, Swe))
-  val nth:   Province = WaterProvince(Nth,                                            List(Bel, Den, Edi, Eng, Hel, Hol, Lon, Nor, Nwg, Ska, Yor))
-  val nwg:   Province = WaterProvince(Nwg,                                            List(Bar, Cly, Edi, Nao, Nor, Nth))
-  val par:   Province = LandProvince (Par,   List(Bre, Bur, Gas, Pic))
-  val pic:   Province = CoastProvince(Pic,   List(Bel, Bre, Bur, Par),                List(Bel, Bre, Eng))
-  val pie:   Province = CoastProvince(Pie,   List(Mar, Tus, Tyr, Ven),                List(Lyo, Mar, Tus))
-  val por:   Province = CoastProvince(Por,   List(Spa),                               List(Mao, SpaNc, SpaSc))
-  val pru:   Province = CoastProvince(Pru,   List(Ber, Lvn, Sil, War),                List(Bal, Ber, Lvn))
-  val rom:   Province = CoastProvince(Rom,   List(Apu, Nap, Tus, Ven),                List(Nap, Tus, Tys))
-  val ruh:   Province = LandProvince (Ruh,   List(Bel, Bur, Hol, Kie, Mun))
-  val rum:   Province = CoastProvince(Rum,   List(Bud, Bul, Gal, Ser, Sev, Ukr),      List(Bla, BulEc, Sev))
-  val ser:   Province = LandProvince (Ser,   List(Alb, Bud, Bul, Gre, Rum, Tri))
-  val sev:   Province = CoastProvince(Sev,   List(Arm, Mos, Rum, Ukr),                List(Arm, Bla, Rum))
-  val sil:   Province = LandProvince (Sil,   List(Ber, Boh, Gal, Mun, Pru, War))
-  val ska:   Province = WaterProvince(Ska,                                            List(Den, Nor, Nth, Swe))
-  val smy:   Province = CoastProvince(Smy,   List(Ank, Arm, Con, Syr),                List(Aeg, Eas, Con, Syr))
-  val spa:   Province = LandProvince (Spa,   List(Gas, Mar, Por))
-  val spaNc: Province = WaterProvince(SpaNc,                                          List(Gas, Mao, Por))
-  val spaSc: Province = WaterProvince(SpaSc,                                          List(Lyo, Mao, Mar, Por, Wes))
-  val stp:   Province = LandProvince (Stp,   List(Fin, Lvn, Mos, Nor))
-  val stpNc: Province = WaterProvince(StpNc,                                          List(Bar, Nor))
-  val stpSc: Province = WaterProvince(StpSc,                                          List(Bot, Fin, Lvn))
-  val swe:   Province = CoastProvince(Swe,   List(Den, Fin, Nor),                     List(Bal, Bot, Den, Fin, Nor, Ska))
-  val syr:   Province = CoastProvince(Syr,   List(Arm, Smy), List(Eas, Smy))
-  val tri:   Province = CoastProvince(Tri,   List(Alb, Bud, Ser, Tyr, Vie, Ven),      List(Adr, Alb, Ven))
-  val tun:   Province = CoastProvince(Tun,   List(Naf),                               List(Ion, Naf, Tys, Wes))
-  val tus:   Province = CoastProvince(Tus,   List(Pie, Rom, Ven),                     List(Lyo, Pie, Rom, Tys))
-  val tyr:   Province = LandProvince (Tyr,   List(Boh, Mun, Pie, Tri, Vie, Ven))
-  val tys:   Province = WaterProvince(Tys,                                            List(Ion, Lyo, Nap, Rom, Tun, Tus, Wes))
-  val ukr:   Province = LandProvince (Ukr,   List(Gal, Mos, Rum, Sev, War))
-  val ven:   Province = CoastProvince(Ven,   List(Apu, Pie, Rom, Tri, Tus, Tyr),      List(Adr, Apu, Tri))
-  val vie:   Province = LandProvince (Vie,   List(Boh, Bud, Gal, Tri, Tyr))
-  val wal:   Province = CoastProvince(Wal,   List(Lon, Lvp, Yor),                     List(Eng, Iri, Lon, Lvp))
-  val war:   Province = LandProvince (War,   List(Gal, Lvn, Mos, Pru, Sil, Ukr))
-  val wes:   Province = WaterProvince(Wes,                                            List(Lyo, Mao, Naf, SpaSc, Tun, Tys))
-  val yor:   Province = CoastProvince(Yor,   List(Edi, Lon, Lvp, Wal),                List(Edi, Lon, Nth))
-
-  val provinces: List[Province] = List(
-    adr, aeg, alb, ank, apu, arm, bal, bar, bel, ber, bla, boh, bot, bre, bud, bul, bulEc, bulSc, bur, cly, con, den,
-    eas, edi, eng, fin, gal, gas, gre, hel, hol, ion, iri, kie, lon, lvn, lvp, lyo, mao, mar, mos, mun, naf, nao, nap,
-    nor, nth, nwg, par, pic, pie, por, pru, rom, ruh, rum, ser, sev, sil, ska, smy, spa, spaNc, spaSc, stp, stpNc,
-    stpSc, swe, syr, tri, tun, tus, tyr, tys, ukr, ven, vie, wal, war, wes, yor
+  val provinces: Map[ProvinceId, Province] = Map(
+    Adr   -> WaterProvince(Adr,                                                   List(Alb, Apu, Ion, Tri, Ven)),
+    Aeg   -> WaterProvince(Aeg,                                                   List(BulSc, Con, Eas, Gre, Ion, Smy)),
+    Alb   -> CoastProvince(Alb,   false, List(Gre, Ser, Tri),                     List(Adr, Gre, Ion, Tri)),
+    Ank   -> CoastProvince(Ank,   true,  List(Arm, Con, Smy),                     List(Arm, Bla, Con)),
+    Apu   -> CoastProvince(Apu,   false, List(Nap, Rom, Ven),                     List(Adr, Ion, Nap, Ven)),
+    Arm   -> CoastProvince(Arm,   false, List(Ank, Sev, Smy, Syr),                List(Ank, Bla, Sev)),
+    Bal   -> WaterProvince(Bal,                                                   List(Ber, Bot, Den, Kie, Lvn, Pru, Swe)),
+    Bar   -> WaterProvince(Bar,                                                   List(Nor, Nwg, StpNc)),
+    Bel   -> CoastProvince(Bel,   true,  List(Bur, Hol, Pic, Ruh),                List(Eng, Hol, Nth, Pic)),
+    Ber   -> CoastProvince(Ber,   true,  List(Kie, Mun, Pru, Sil),                List(Bal, Kie, Pru)),
+    Bla   -> WaterProvince(Bla,                                                   List(Ank, Arm, BulEc, Con, Rum, Sev)),
+    Boh   -> LandProvince (Boh,   false, List(Gal, Mun, Sil, Tyr, Vie)),
+    Bot   -> WaterProvince(Bot,                                                   List(Bal, Fin, Lvn, StpSc, Swe)),
+    Bre   -> CoastProvince(Bre,   true,  List(Gas, Par, Pic),                     List(Eng, Gas, Mao, Pic)),
+    Bud   -> LandProvince (Bud,   true,  List(Gal, Rum, Ser, Tri, Vie)),
+    Bul   -> LandProvince (Bul,   true,  List(Con, Gre, Rum, Ser)),
+    BulEc -> WaterProvince(BulEc,                                                 List(Bla, Con, Rum)),
+    BulSc -> WaterProvince(BulSc,                                                 List(Aeg, Con, Gre)),
+    Bur   -> LandProvince (Bur,   false, List(Bel, Gas, Mar, Mun, Par, Pic, Ruh)),
+    Cly   -> CoastProvince(Cly,   false, List(Edi, Lvp),                          List(Edi, Lvp, Nao, Nwg)),
+    Con   -> CoastProvince(Con,   true,  List(Ank, Bul, Smy),                     List(Aeg, Ank, Bla, BulEc, BulSc, Smy)),
+    Den   -> CoastProvince(Den,   true,  List(Kie, Swe),                          List(Bal, Hel, Kie, Nth, Ska, Swe)),
+    Eas   -> WaterProvince(Eas,                                                   List(Aeg, Ion, Smy, Syr)),
+    Edi   -> CoastProvince(Edi,   true,  List(Cly, Lvp, Yor),                     List(Cly, Nth, Nwg, Yor)),
+    Eng   -> WaterProvince(Eng,                                                   List(Bel, Bre, Iri, Lon, Mao, Nth, Pic, Wal)),
+    Fin   -> CoastProvince(Fin,   false, List(Nor, Stp, Swe),                     List(Bot, StpSc, Swe)),
+    Gal   -> LandProvince (Gal,   false, List(Boh, Bud, Rum, Sil, Ukr, Vie, War)),
+    Gas   -> CoastProvince(Gas,   false, List(Bre, Bur, Mar, Par, Spa),           List(Bre, Mao, SpaNc)),
+    Gre   -> CoastProvince(Gre,   true,  List(Alb, Bul, Ser),                     List(Aeg, Alb, BulSc, Ion)),
+    Hel   -> WaterProvince(Hel,                                                   List(Den, Hol, Kie, Nth)),
+    Hol   -> CoastProvince(Hol,   true,  List(Bel, Kie, Ruh),                     List(Bel, Hel, Kie, Nth)),
+    Ion   -> WaterProvince(Ion,                                                   List(Adr, Aeg, Alb, Apu, Eas, Gre, Nap, Tun, Tys)),
+    Iri   -> WaterProvince(Iri,                                                   List(Eng, Lvp, Mao, Nao, Wal)),
+    Kie   -> CoastProvince(Kie,   true,  List(Ber, Den, Hol, Mun, Ruh),           List(Bal, Ber, Den, Hel, Hol)),
+    Lon   -> CoastProvince(Lon,   true,  List(Wal, Yor),                          List(Eng, Nth, Wal, Yor)),
+    Lvn   -> CoastProvince(Lvn,   false, List(Mos, Pru, Stp, War),                List(Bal, Bot, Pru, StpSc)),
+    Lvp   -> CoastProvince(Lvp,   true,  List(Cly, Edi, Wal, Yor),                List(Cly, Iri, Nao, Wal)),
+    Lyo   -> WaterProvince(Lyo,                                                   List(Mar, Pie, SpaSc, Tus, Tys, Wes)),
+    Mao   -> WaterProvince(Mao,                                                   List(Bre, Eng, Gas, Iri, Naf, Nao, Por, SpaNc, SpaSc, Wes)),
+    Mar   -> CoastProvince(Mar,   true,  List(Bur, Gas, Pie, Spa),                List(Lyo, Pie, SpaSc)),
+    Mos   -> LandProvince (Mos,   true,  List(Lvn, Sev, Stp, Ukr, War)),
+    Mun   -> LandProvince (Mun,   true,  List(Ber, Boh, Bur, Kie, Ruh, Sil, Tyr)),
+    Naf   -> CoastProvince(Naf,   false, List(Tun),                               List(Mao, Tun, Wes)),
+    Nao   -> WaterProvince(Nao,                                                   List(Cly, Iri, Lvp, Mao, Nwg)),
+    Nap   -> CoastProvince(Nap,   true,  List(Apu, Rom),                          List(Apu, Ion, Rom, Tys)),
+    Nor   -> CoastProvince(Nor,   true,  List(Fin, Stp, Swe),                     List(Bar, Nth, Nwg, Ska, StpNc, Swe)),
+    Nth   -> WaterProvince(Nth,                                                   List(Bel, Den, Edi, Eng, Hel, Hol, Lon, Nor, Nwg, Ska, Yor)),
+    Nwg   -> WaterProvince(Nwg,                                                   List(Bar, Cly, Edi, Nao, Nor, Nth)),
+    Par   -> LandProvince (Par,   true,  List(Bre, Bur, Gas, Pic)),
+    Pic   -> CoastProvince(Pic,   false, List(Bel, Bre, Bur, Par),                List(Bel, Bre, Eng)),
+    Pie   -> CoastProvince(Pie,   false, List(Mar, Tus, Tyr, Ven),                List(Lyo, Mar, Tus)),
+    Por   -> CoastProvince(Por,   true,  List(Spa),                               List(Mao, SpaNc, SpaSc)),
+    Pru   -> CoastProvince(Pru,   false, List(Ber, Lvn, Sil, War),                List(Bal, Ber, Lvn)),
+    Rom   -> CoastProvince(Rom,   true,  List(Apu, Nap, Tus, Ven),                List(Nap, Tus, Tys)),
+    Ruh   -> LandProvince (Ruh,   false, List(Bel, Bur, Hol, Kie, Mun)),
+    Rum   -> CoastProvince(Rum,   true,  List(Bud, Bul, Gal, Ser, Sev, Ukr),      List(Bla, BulEc, Sev)),
+    Ser   -> LandProvince (Ser,   true,  List(Alb, Bud, Bul, Gre, Rum, Tri)),
+    Sev   -> CoastProvince(Sev,   true,  List(Arm, Mos, Rum, Ukr),                List(Arm, Bla, Rum)),
+    Sil   -> LandProvince (Sil,   false, List(Ber, Boh, Gal, Mun, Pru, War)),
+    Ska   -> WaterProvince(Ska,                                                   List(Den, Nor, Nth, Swe)),
+    Smy   -> CoastProvince(Smy,   true,  List(Ank, Arm, Con, Syr),                List(Aeg, Eas, Con, Syr)),
+    Spa   -> LandProvince (Spa,   true,  List(Gas, Mar, Por)),
+    SpaNc -> WaterProvince(SpaNc,                                                 List(Gas, Mao, Por)),
+    SpaSc -> WaterProvince(SpaSc,                                                 List(Lyo, Mao, Mar, Por, Wes)),
+    Stp   -> LandProvince (Stp,   true,  List(Fin, Lvn, Mos, Nor)),
+    StpNc -> WaterProvince(StpNc,                                                 List(Bar, Nor)),
+    StpSc -> WaterProvince(StpSc,                                                 List(Bot, Fin, Lvn)),
+    Swe   -> CoastProvince(Swe,   true,  List(Den, Fin, Nor),                     List(Bal, Bot, Den, Fin, Nor, Ska)),
+    Syr   -> CoastProvince(Syr,   false, List(Arm, Smy), List(Eas, Smy)),
+    Tri   -> CoastProvince(Tri,   true,  List(Alb, Bud, Ser, Tyr, Vie, Ven),      List(Adr, Alb, Ven)),
+    Tun   -> CoastProvince(Tun,   true,  List(Naf),                               List(Ion, Naf, Tys, Wes)),
+    Tus   -> CoastProvince(Tus,   false, List(Pie, Rom, Ven),                     List(Lyo, Pie, Rom, Tys)),
+    Tyr   -> LandProvince (Tyr,   false, List(Boh, Mun, Pie, Tri, Vie, Ven)),
+    Tys   -> WaterProvince(Tys,                                                   List(Ion, Lyo, Nap, Rom, Tun, Tus, Wes)),
+    Ukr   -> LandProvince (Ukr,   false, List(Gal, Mos, Rum, Sev, War)),
+    Ven   -> CoastProvince(Ven,   true,  List(Apu, Pie, Rom, Tri, Tus, Tyr),      List(Adr, Apu, Tri)),
+    Vie   -> LandProvince (Vie,   true,  List(Boh, Bud, Gal, Tri, Tyr)),
+    Wal   -> CoastProvince(Wal,   false, List(Lon, Lvp, Yor),                     List(Eng, Iri, Lon, Lvp)),
+    War   -> LandProvince (War,   true,  List(Gal, Lvn, Mos, Pru, Sil, Ukr)),
+    Wes   -> WaterProvince(Wes,                                                   List(Lyo, Mao, Naf, SpaSc, Tun, Tys)),
+    Yor   -> CoastProvince(Yor,   false, List(Edi, Lon, Lvp, Wal),                List(Edi, Lon, Nth))
   )
 
-  def province(id: ProvinceId): Option[Province] = provinces.find(_.id == id)
+  def province(id: ProvinceId): Option[Province] = provinces.get(id)
 
 }
