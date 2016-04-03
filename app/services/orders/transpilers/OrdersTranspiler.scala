@@ -10,7 +10,6 @@ import scala.language.implicitConversions
 @ImplementedBy(classOf[TheOrdersTranspiler])
 trait OrdersTranspiler {
 
-  def transpile(jsValue: JsValue): Option[Map[CountryId, List[Order]]]
+  def apply(jsValue: JsValue): Option[Map[CountryId, List[Order]]]
 
 }
-

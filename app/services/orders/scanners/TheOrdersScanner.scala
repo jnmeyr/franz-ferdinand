@@ -51,7 +51,7 @@ class TheOrdersScanner extends OrdersScanner {
     scanUnitKindToken(word) orElse scanProvinceIdToken(word) orElse scanOrderKindToken(word)
   }
 
-  def scan(string: String): Option[List[OrderToken]] = {
+  def apply(string: String): Option[List[OrderToken]] = {
     Option(string) match {
       case Some(_) if string.isEmpty =>
         Some(Nil)

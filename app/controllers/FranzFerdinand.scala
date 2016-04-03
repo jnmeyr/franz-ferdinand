@@ -43,7 +43,7 @@ class FranzFerdinand @Inject() (store: Store, ordersTranspiler: OrdersTranspiler
   def orders(gameId: GameId) = Action(parse.tolerantJson) { request =>
     println("orders: " + gameId + ": " + request.body)
 
-    ordersTranspiler.transpile(request.body) match {
+    ordersTranspiler(request.body) match {
       case Some(orders) =>
         println(orders)
         Ok(Json.toJson(Time.times.tail.head))

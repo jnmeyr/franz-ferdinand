@@ -51,8 +51,8 @@ class TheOrdersParser extends OrdersParser {
     case provinceId => HoldOrder(provinceId)
   }
 
-  private val moveOrderParser: Parser[MoveOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Move)) ~ provinceIdParser ^^ {
-    case provinceId ~ targetProvinceId => MoveOrder(provinceId, targetProvinceId)
+  private val moveOrderParser: Parser[MoveOrder] = (unitKindParser.? ~> provinceIdParser) ~ (orderKindParser(Move) ~> provinceIdParser).+ ^^ {
+    case provinceId ~ targetProvinceIds => MoveOrder(provinceId, targetProvinceIds)
   }
 
   private val convoyOrderParser: Parser[ConvoyOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Convoy)) ~ (unitKindParser.? ~> provinceIdParser) ~ (orderKindParser(Move) ~> provinceIdParser) ^^ {
@@ -79,7 +79,7 @@ class TheOrdersParser extends OrdersParser {
 
   private val ordersParser: Parser[List[Order]] = orderParser.*
 
-  def parse(tokens: ListReader[OrderToken]): Option[List[Order]] = {
+  def apply(tokens: ListReader[OrderToken]): Option[List[Order]] = {
     ordersParser(tokens) match {
       case Success(orders, input) if input.atEnd =>
         Some(orders)

@@ -11,7 +11,7 @@ sealed trait Order {
 
 case class HoldOrder(provinceId: ProvinceId) extends Order
 
-case class MoveOrder(provinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
+case class MoveOrder(provinceId: ProvinceId, targetProvinceIds: List[ProvinceId]) extends Order
 
 case class ConvoyOrder(provinceId: ProvinceId, sourceProvinceId: ProvinceId, targetProvinceId: ProvinceId) extends Order
 

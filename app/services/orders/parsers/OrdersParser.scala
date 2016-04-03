@@ -11,6 +11,6 @@ trait OrdersParser extends Parsers {
 
   type Elem = OrderToken
 
-  def parse(tokens: ListReader[OrderToken]): Option[List[Order]]
+  def apply(tokens: ListReader[OrderToken]): Option[List[Order]]
 
 }

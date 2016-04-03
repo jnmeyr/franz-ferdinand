@@ -20,4 +20,3 @@ object ListReader {
   implicit def list2listReader[T >: Null <: AnyRef](list: List[T]): ListReader[T] = new ListReader[T](list)
 
 }
-

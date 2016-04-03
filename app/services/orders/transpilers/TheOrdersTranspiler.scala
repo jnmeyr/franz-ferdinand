@@ -14,11 +14,11 @@ class TheOrdersTranspiler @Inject() (ordersScanner: OrdersScanner, ordersParser:
   def asOrders(jsLookupResult: JsLookupResult): Option[List[Order]] = for {
     jsValue <- jsLookupResult.toOption
     string <- jsValue.asOpt[String]
-    tokens <- ordersScanner.scan(string)
-    orders <- ordersParser.parse(tokens)
+    tokens <- ordersScanner(string)
+    orders <- ordersParser(tokens)
   } yield orders
 
-  def transpile(jsValue: JsValue): Option[Map[CountryId, List[Order]]] = {
+  def apply(jsValue: JsValue): Option[Map[CountryId, List[Order]]] = {
     val orders = Map[CountryId, Option[List[Order]]](
       Austria -> asOrders(jsValue \ "a"),
       England -> asOrders(jsValue \ "e"),
@@ -37,4 +37,3 @@ class TheOrdersTranspiler @Inject() (ordersScanner: OrdersScanner, ordersParser:
   }
 
 }
-

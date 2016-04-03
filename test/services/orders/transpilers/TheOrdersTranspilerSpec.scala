@@ -43,14 +43,14 @@ class TheOrdersTranspilerSpec extends FlatSpec with Matchers {
   ))
 
   "The orders transpiler" should "be able to transpile correct orders" in {
-    theOrdersTranspiler.transpile(orders) should not be (None)
+    theOrdersTranspiler(orders) should not be (None)
   }
 
   "The orders transpiler" should "not be able to transpile wrong orders" in {
-    theOrdersTranspiler.transpile(noOrders) should be (None)
-    theOrdersTranspiler.transpile(missingOrders) should be (None)
-    theOrdersTranspiler.transpile(oneNoOrders) should be (None)
-    theOrdersTranspiler.transpile(oneMissingOrders) should be (None)
+    theOrdersTranspiler(noOrders) should be (None)
+    theOrdersTranspiler(missingOrders) should be (None)
+    theOrdersTranspiler(oneNoOrders) should be (None)
+    theOrdersTranspiler(oneMissingOrders) should be (None)
   }
 
  }
