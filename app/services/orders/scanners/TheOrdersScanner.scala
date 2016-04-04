@@ -42,6 +42,8 @@ class TheOrdersScanner extends OrdersScanner {
       Some(OrderKindOrderToken(Disband))
     } else if ("builds".equalsIgnoreCase(word) || "b".equalsIgnoreCase(word)) {
       Some(OrderKindOrderToken(Build))
+    } else if ("waives".equalsIgnoreCase(word) || "w".equalsIgnoreCase(word)) {
+      Some(OrderKindOrderToken(Waive))
     } else {
       None
     }

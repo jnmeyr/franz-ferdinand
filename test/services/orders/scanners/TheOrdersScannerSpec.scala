@@ -76,6 +76,12 @@ class TheOrdersScannerSpec extends FlatSpec with Matchers {
     theOrdersScanner("BUILDS") should be (Some(List(OrderKindOrderToken(Build))))
     theOrdersScanner("b") should be (Some(List(OrderKindOrderToken(Build))))
     theOrdersScanner("B") should be (Some(List(OrderKindOrderToken(Build))))
+
+    theOrdersScanner("waives") should be (Some(List(OrderKindOrderToken(Waive))))
+    theOrdersScanner("Waives") should be (Some(List(OrderKindOrderToken(Waive))))
+    theOrdersScanner("WAIVES") should be (Some(List(OrderKindOrderToken(Waive))))
+    theOrdersScanner("w") should be (Some(List(OrderKindOrderToken(Waive))))
+    theOrdersScanner("W") should be (Some(List(OrderKindOrderToken(Waive))))
   }
 
   "The orders scanner" should "be able to scan correct tokens" in {
@@ -86,6 +92,8 @@ class TheOrdersScannerSpec extends FlatSpec with Matchers {
     theOrdersScanner("ARMY BER SUPPORTS FLEET STP MOVES KIE") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Support), UnitKindOrderToken(Fleet), ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move), ProvinceIdOrderToken(Kie))))
     theOrdersScanner("ARMY\tBER\rRetreats  \n       stp") should be (Some(List(UnitKindOrderToken(Army), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Retreat), ProvinceIdOrderToken(Stp))))
     theOrdersScanner("ska\n\n\n\n\n\n\n\nd") should be (Some(List(ProvinceIdOrderToken(Ska), OrderKindOrderToken(Disband))))
+    theOrdersScanner("ber b a") should be (Some(List(ProvinceIdOrderToken(Ber), OrderKindOrderToken(Build), UnitKindOrderToken(Army))))
+    theOrdersScanner("ber w") should be (Some(List(ProvinceIdOrderToken(Ber), OrderKindOrderToken(Waive))))
   }
 
   "The orders scanner" should "not be able to scan wrong tokens" in {

@@ -11,5 +11,6 @@ object OrderKind extends Enumeration {
   val Retreat = Value("R")
   val Disband = Value("D")
   val Build   = Value("B")
+  val Waive   = Value("W")
 
 }

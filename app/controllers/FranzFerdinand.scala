@@ -5,6 +5,8 @@ import javax.inject.{Inject, Singleton}
 import models.games.GameId.GameId
 import models.provinces.Provinces
 import models.times.Time
+import models.times.Season._
+import models.times.Phase._
 import play.api.libs.json.Json
 import play.api.mvc._
 import services.orders.interpreters.OrdersInterpreter
@@ -36,7 +38,7 @@ class FranzFerdinand @Inject() (store: Store, ordersTranspiler: OrdersTranspiler
     ordersTranspiler(request.body) match {
       case Some(orders) =>
         println(orders)
-        val provinces = ordersInterpreter(Provinces.startProvinces, orders)
+        val provinces = ordersInterpreter(Time(1901, Spring, Diplomacy), Provinces.startProvinces, orders)
         println(provinces)
 
         Ok(Json.toJson(Time.times.tail.head))

@@ -75,7 +75,11 @@ class TheOrdersParser extends OrdersParser {
     case provinceId ~ unitKind => BuildOrder(provinceId, unitKind)
   }
 
-  private val orderParser: Parser[Order] = holdOrderParser | moveOrderParser | convoyOrderParser | supportOrderParser | retreatOrderParser | disbandOrderParser | buildOrderParser
+  private val waiveOrderParser: Parser[WaiveOrder] = (provinceIdParser <~ orderKindParser(Waive)) ^^ {
+    case provinceId => WaiveOrder(provinceId)
+  }
+
+  private val orderParser: Parser[Order] = holdOrderParser | moveOrderParser | convoyOrderParser | supportOrderParser | retreatOrderParser | disbandOrderParser | buildOrderParser | waiveOrderParser
 
   private val ordersParser: Parser[List[Order]] = orderParser.*
 

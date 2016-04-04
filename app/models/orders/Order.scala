@@ -22,3 +22,5 @@ case class RetreatOrder(provinceId: ProvinceId, targetProvinceId: ProvinceId) ex
 case class DisbandOrder(provinceId: ProvinceId) extends Order
 
 case class BuildOrder(provinceId: ProvinceId, unitKind: UnitKind) extends Order
+
+case class WaiveOrder(provinceId: ProvinceId) extends Order

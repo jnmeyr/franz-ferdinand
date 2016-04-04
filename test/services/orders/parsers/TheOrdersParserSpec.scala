@@ -55,7 +55,10 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
 
   "the orders parser" should "be able to parse build orders" in {
     theOrdersParser(List(ProvinceIdOrderToken(Ber), OrderKindOrderToken(Build), UnitKindOrderToken(Fleet))) should be (Some(List(BuildOrder(Ber, Fleet))))
+  }
 
+  "the orders parser" should "be able to parse waive orders" in {
+    theOrdersParser(List(ProvinceIdOrderToken(Ber), OrderKindOrderToken(Waive))) should be (Some(List(WaiveOrder(Ber))))
   }
 
   "The orders parser" should "be able to parse correct orders" in {
@@ -70,8 +73,9 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
       ProvinceIdOrderToken(Stp), OrderKindOrderToken(Support), ProvinceIdOrderToken(Ber), OrderKindOrderToken(Move), ProvinceIdOrderToken(StpNc),
       ProvinceIdOrderToken(Ber), OrderKindOrderToken(Retreat), ProvinceIdOrderToken(Ska),
       ProvinceIdOrderToken(Ber), OrderKindOrderToken(Disband),
-      ProvinceIdOrderToken(Ber), OrderKindOrderToken(Build), UnitKindOrderToken(Fleet)
-    )) should be (Some(List(HoldOrder(Stp), MoveOrder(Ber, List(Stp)), MoveOrder(Ber, List(Stp, Ska)), ConvoyOrder(Ber, Stp, Ska), SupportOrder(Stp, Ber), SupportOrder(Stp, Ber, Some(StpNc)), RetreatOrder(Ber, Ska), DisbandOrder(Ber), BuildOrder(Ber, Fleet))))
+      ProvinceIdOrderToken(Ber), OrderKindOrderToken(Build), UnitKindOrderToken(Fleet),
+      ProvinceIdOrderToken(Ber), OrderKindOrderToken(Waive)
+    )) should be (Some(List(HoldOrder(Stp), MoveOrder(Ber, List(Stp)), MoveOrder(Ber, List(Stp, Ska)), ConvoyOrder(Ber, Stp, Ska), SupportOrder(Stp, Ber), SupportOrder(Stp, Ber, Some(StpNc)), RetreatOrder(Ber, Ska), DisbandOrder(Ber), BuildOrder(Ber, Fleet), WaiveOrder(Ber))))
   }
 
   "The orders parser" should "not be able to parse wrong orders" in {
@@ -90,6 +94,7 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
     theOrdersParser(List(OrderKindOrderToken(Retreat))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Disband))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Build))) should be (None)
+    theOrdersParser(List(OrderKindOrderToken(Waive))) should be (None)
 
     // ProvinceId UnitKind
     theOrdersParser(List(ProvinceIdOrderToken(Stp), UnitKindOrderToken(Army))) should be (None)
@@ -105,6 +110,7 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
     theOrdersParser(List(OrderKindOrderToken(Retreat), UnitKindOrderToken(Army))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Disband), UnitKindOrderToken(Army))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Build), UnitKindOrderToken(Army))) should be (None)
+    theOrdersParser(List(OrderKindOrderToken(Waive), UnitKindOrderToken(Army))) should be (None)
 
     // OrderKind ProvinceId
     theOrdersParser(List(OrderKindOrderToken(Hold), ProvinceIdOrderToken(Stp))) should be (None)
@@ -114,6 +120,7 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
     theOrdersParser(List(OrderKindOrderToken(Retreat), ProvinceIdOrderToken(Stp))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Disband), ProvinceIdOrderToken(Stp))) should be (None)
     theOrdersParser(List(OrderKindOrderToken(Build), ProvinceIdOrderToken(Stp))) should be (None)
+    theOrdersParser(List(OrderKindOrderToken(Waive), ProvinceIdOrderToken(Stp))) should be (None)
 
     // UnitKind OrderKind
     theOrdersParser(List(UnitKindOrderToken(Army), OrderKindOrderToken(Hold))) should be (None)
@@ -123,6 +130,7 @@ class TheOrdersParserSpec extends FlatSpec with Matchers {
     theOrdersParser(List(UnitKindOrderToken(Army), OrderKindOrderToken(Retreat))) should be (None)
     theOrdersParser(List(UnitKindOrderToken(Army), OrderKindOrderToken(Disband))) should be (None)
     theOrdersParser(List(UnitKindOrderToken(Army), OrderKindOrderToken(Build))) should be (None)
+    theOrdersParser(List(UnitKindOrderToken(Army), OrderKindOrderToken(Waive))) should be (None)
 
     // [UnitKind] ProviceId OrderKind
     theOrdersParser(List(ProvinceIdOrderToken(Stp), OrderKindOrderToken(Move))) should be (None)
