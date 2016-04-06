@@ -9,13 +9,13 @@ class ProvinceSpec extends FlatSpec with Matchers {
       case (_, province: LandProvince) =>
         province
     }).foreach({
-      case LandProvince(id, _, routes) =>
-        routes shouldNot contain (id)
+      case LandProvince(provinceId, _, routes) =>
+        routes shouldNot contain (provinceId)
         routes.map(Province.province).foreach({
-          case Some(LandProvince(_, _, routes)) =>
-            routes should contain (id)
-          case Some(CoastProvince(_, _, routes, _)) =>
-            routes should contain (id)
+          case LandProvince(_, _, routes) =>
+            routes should contain (provinceId)
+          case CoastProvince(_, _, routes, _) =>
+            routes should contain (provinceId)
           case _ =>
             fail()
         })
@@ -27,24 +27,24 @@ class ProvinceSpec extends FlatSpec with Matchers {
       case (_, province: CoastProvince) =>
         province
     }).foreach({
-      case CoastProvince(id, _, routes, ways) =>
-        routes shouldNot contain (id)
-        ways shouldNot contain (id)
+      case CoastProvince(provinceId, _, routes, ways) =>
+        routes shouldNot contain (provinceId)
+        ways shouldNot contain (provinceId)
 
         routes.map(Province.province).foreach({
-          case Some(LandProvince(_, _, routes)) =>
-            routes should contain (id)
-          case Some(CoastProvince(_, _, routes, _)) =>
-            routes should contain (id)
+          case LandProvince(_, _, routes) =>
+            routes should contain (provinceId)
+          case CoastProvince(_, _, routes, _) =>
+            routes should contain (provinceId)
           case _ =>
             fail()
         })
 
         ways.map(Province.province).foreach({
-          case Some(CoastProvince(_, _, _, ways)) =>
-            ways should contain (id)
-          case Some(WaterProvince(_, ways)) =>
-            ways should contain (id)
+          case CoastProvince(_, _, _, ways) =>
+            ways should contain (provinceId)
+          case WaterProvince(_, ways) =>
+            ways should contain (provinceId)
           case _ =>
             fail()
         })
@@ -56,13 +56,13 @@ class ProvinceSpec extends FlatSpec with Matchers {
       case (_, province: WaterProvince) =>
         province
     }).foreach({
-      case WaterProvince(id, ways) =>
-        ways shouldNot contain (id)
+      case WaterProvince(provinceId, ways) =>
+        ways shouldNot contain (provinceId)
         ways.map(Province.province).foreach({
-          case Some(CoastProvince(_, _, _, ways)) =>
-            ways should contain (id)
-          case Some(WaterProvince(_, ways)) =>
-            ways should contain (id)
+          case CoastProvince(_, _, _, ways) =>
+            ways should contain (provinceId)
+          case WaterProvince(_, ways) =>
+            ways should contain (provinceId)
           case _ =>
             fail()
         })

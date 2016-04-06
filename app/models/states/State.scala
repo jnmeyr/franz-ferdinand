@@ -1,11 +1,10 @@
 package models.states
 
-import models.countries.CountryId.CountryId
-import models.orders.Order
+import models.orders.Orders.Orders
 import models.times.Time
-import Time._
+import models.times.Time._
 
-case class State(time: Time, orders: Option[Map[CountryId, List[Order]]])
+case class State(time: Time, orders: Option[Orders])
 
 object State {
 

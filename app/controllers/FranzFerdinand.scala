@@ -29,7 +29,7 @@ class FranzFerdinand @Inject() (store: Store, ordersTranspiler: OrdersTranspiler
   def provinces(gameId: GameId) = Action {
     println("provinces: " + gameId)
 
-    Ok(Json.toJson(Provinces.startProvinces))
+    Ok(Json.toJson(Provinces.startProvinces)(Provinces.provincesWrites))
   }
 
   def orders(gameId: GameId) = Action(parse.tolerantJson) { request =>

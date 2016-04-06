@@ -4,7 +4,9 @@ import models.countries.CountryId._
 
 object Orders {
 
-  val orders: Map[CountryId, List[Order]] = Map(
+  type Orders = Map[CountryId, List[Order]]
+
+  val orders: Orders = Map(
     Austria -> Nil,
     England -> Nil,
     France  -> Nil,

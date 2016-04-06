@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import models.countries.CountryId._
 import models.orders.Order
+import models.orders.Orders.Orders
 import play.api.libs.json.{JsLookupResult, JsValue}
 import services.orders.parsers.OrdersParser
 import services.orders.scanners.OrdersScanner
@@ -18,7 +19,7 @@ class TheOrdersTranspiler @Inject() (ordersScanner: OrdersScanner, ordersParser:
     orders <- ordersParser(tokens)
   } yield orders
 
-  def apply(jsValue: JsValue): Option[Map[CountryId, List[Order]]] = {
+  def apply(jsValue: JsValue): Option[Orders] = {
     val orders = Map[CountryId, Option[List[Order]]](
       Austria -> asOrders(jsValue \ "a"),
       England -> asOrders(jsValue \ "e"),

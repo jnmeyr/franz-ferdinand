@@ -1,8 +1,7 @@
 package services.orders.transpilers
 
 import com.google.inject.ImplementedBy
-import models.countries.CountryId._
-import models.orders.Order
+import models.orders.Orders.Orders
 import play.api.libs.json.JsValue
 
 import scala.language.implicitConversions
@@ -10,6 +9,6 @@ import scala.language.implicitConversions
 @ImplementedBy(classOf[TheOrdersTranspiler])
 trait OrdersTranspiler {
 
-  def apply(jsValue: JsValue): Option[Map[CountryId, List[Order]]]
+  def apply(jsValue: JsValue): Option[Orders]
 
 }
