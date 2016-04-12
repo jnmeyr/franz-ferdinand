@@ -1,5 +1,6 @@
 package models.provinces
 
+import models.provinces.ProvinceId._
 import org.scalatest.{FlatSpec, Matchers}
 
 class ProvinceSpec extends FlatSpec with Matchers {
@@ -67,6 +68,30 @@ class ProvinceSpec extends FlatSpec with Matchers {
             fail()
         })
     })
+  }
+
+  "Land provinces" should "not have a convoy" in {
+    Province.isConvoy(Nil) should be (false)
+    Province.isConvoy(List(Vie)) should be (false)
+    Province.isConvoy(List(Vie, Tri)) should be (false)
+    Province.isConvoy(List(Vie, Adr, Apu)) should be (false)
+    Province.isConvoy(List(Vie, Adr, Ion, Gre)) should be (false)
+  }
+
+  "Coast provinces" should "be able to have convoys" in {
+    Province.isConvoy(Nil) should be (false)
+    Province.isConvoy(List(Tri)) should be (false)
+    Province.isConvoy(List(Tri, Alb)) should be (false)
+    Province.isConvoy(List(Tri, Adr, Apu)) should be (true)
+    Province.isConvoy(List(Tri, Adr, Ion, Gre)) should be (true)
+  }
+
+  "Water provinces" should "not have a convoy" in {
+    Province.isConvoy(Nil) should be (false)
+    Province.isConvoy(List(Tys)) should be (false)
+    Province.isConvoy(List(Tys, Rom)) should be (false)
+    Province.isConvoy(List(Tys, Adr, Apu)) should be (false)
+    Province.isConvoy(List(Tys, Adr, Ion, Gre)) should be (false)
   }
 
 }

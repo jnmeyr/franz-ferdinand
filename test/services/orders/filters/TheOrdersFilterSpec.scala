@@ -132,9 +132,353 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  // TODO "The orders filter" should "be able to keep valid (...) move orders during a diplomacy phase" in {}
+  "The orders filter" should "be able to keep valid (army from land to land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Bud))
+      )
+    )
 
-  // TODO "The orders filter" should "be able to filter invalid (...) move orders during a diplomacy phase" in {}
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army from land to coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army from coast to land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Vie))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army from coast to coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Alb))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army from coast to coast province over water provinces) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Adr, Apu))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from coast to coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Alb))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from coast to water province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from water to coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Adr, List(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from water to water province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Adr, List(Ion))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (no unit in province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (foreign unit in province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(England)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to water province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to coast province over land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Bud, Rum))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to coast province over coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Ven, Apu))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from land to unreachable land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Ukr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from land to unreachable coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Vie, List(Ven))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to unreachable land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Gal))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to unreachable coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Gre))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from coast to coast province over unreachable water provinces) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Ion, Alb))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from coast to land province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Bud))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from coast to coast province over water provinces) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Adr, Apu))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from coast to unreachable coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Gre))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from coast to unreachable water province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Tri, List(Ion))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from water to unreachable coast province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Adr, List(Gre))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from water to unreachable water province) move orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        MoveOrder(Adr, List(Eas))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
 
   "The orders filter" should "be able to filter move orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
@@ -164,9 +508,269 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  // TODO "The orders filter" should "be able to keep valid (...) convoy orders during a diplomacy phase" in {}
+  "The orders filter" should "be able to keep valid convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Tri, Apu)
+      )
+    )
 
-  // TODO "The orders filter" should "be able to filter invalid (...) convoy orders during a diplomacy phase" in {}
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (no unit in province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Tri, Apu)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (foreign unit in province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(England)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Tri, Apu)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in land province from land to land province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Vie, Bud, Gal)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in land province from land to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Vie, Bud, Tri)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in land province from coast to land province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Vie, Tri, Bud)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in land province from coast to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tyr -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Tyr, Tri, Ven)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in coast province from land to land province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Tri, Tyr, Vie)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in coast province from land to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Tri, Tyr, Ven)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in coast province from coast to land province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Tri, Ven, Tyr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army in coast province from coast to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Tri, Ven, Alb)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in coast province from coast to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Alb -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Alb, Tri, Gre)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in coast province from coast to water province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Alb -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Alb, Tri, Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in coast province from water to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Alb -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Alb, Ion, Gre)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in coast province from water to water province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Alb -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Alb, Adr, Ion)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in water province from coast to unreachable coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Tri, Nap)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in water province from coast to water province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Tri, Ion)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in water province from water to coast province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Adr, Ion, Tri)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet in water province from water to water province) convoy orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ion -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        ConvoyOrder(Ion, Adr, Aeg)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
 
   "The orders filter" should "be able to filter convoy orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
@@ -196,9 +800,311 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  // TODO "The orders filter" should "be able to keep valid (...) support orders during a diplomacy phase" in {}
+  "The orders filter" should "be able to keep valid (army from land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Gal)
+      )
+    )
 
-  // TODO "The orders filter" should "be able to filter invalid (...) support orders during a diplomacy phase" in {}
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army from coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Tri)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army to land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Bul, Some(Ser))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (army to coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Ser, Some(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ven -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Ven, Tri)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet from water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Ven, Some(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet to coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ven -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Ven, Adr, Some(Tri))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to keep valid (fleet to water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ven -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Ven, Tri, Some(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (no unit in province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Ven, Tri, Some(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (foreign unit in province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ven -> (None, Some(Fleet(England)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Ven, Tri, Some(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from unreachable land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, War)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from unreachable coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Alb)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army from water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Tri, Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army to unreachable land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Pru, Some(War))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army to unreachable coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Bud -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Bud, Ser, Some(Alb))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (army to water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tri -> (None, Some(Army(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Tri, Alb, Some(Adr))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Bud)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from unreachable coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Gre)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet from unreachable water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Aeg)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet to land province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Tri, Some(Bud))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet to unreachable coast province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Alb, Some(Gre))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (fleet to unreachable water province) support orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(Fleet(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        SupportOrder(Adr, Ion, Some(Aeg))
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
 
   "The orders filter" should "be able to filter support orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)

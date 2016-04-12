@@ -39,7 +39,7 @@ class TheOrdersFilter extends OrdersFilter {
           if (time.phase == Adjustment) {
             provinces.get(provinceId) match {
               case Some((Some(otherCountryId), None, _)) if otherCountryId == countryId =>
-                Country.country(countryId).provinces.contains(provinceId)
+                Country.country(countryId).hasProvince(provinceId)
               case _ =>
                 false
             }

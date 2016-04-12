@@ -1,7 +1,6 @@
 package models.provinces
 
 import models.provinces.ProvinceId._
-import play.api.libs.json._
 
 sealed trait Province {
 
@@ -13,7 +12,7 @@ sealed trait Province {
 
   def ways: List[ProvinceId]
 
-  override def equals(any: Any) = any match {
+  override def equals(that: Any) = that match {
     case that: Province =>
       (this.provinceId, that.provinceId) match {
         case (Stp, StpNc) | (StpNc, Stp) | (Stp, StpSc) | (StpSc, Stp) | (StpNc, StpSc) | (StpSc, StpNc) =>
@@ -30,6 +29,10 @@ sealed trait Province {
     case _ =>
       false
   }
+
+  def hasRoute(targetProvinceId: ProvinceId): Boolean = routes.contains(targetProvinceId)
+
+  def hasWay(targetProvinceId: ProvinceId): Boolean = ways.contains(targetProvinceId)
 
 }
 
@@ -136,5 +139,29 @@ object Province {
   )
 
   def province(provinceId: ProvinceId): Province = provinces.get(provinceId).get
+
+  def isConvoy(provinces: List[ProvinceId]): Boolean = {
+    provinces match {
+      case sourceProvince +: transitionProvinces :+ targetProvince if transitionProvinces.nonEmpty =>
+        (Province.province(sourceProvince), transitionProvinces.map(Province.province), Province.province(targetProvince)) match {
+          case (sourceProvince: CoastProvince, transitionProvinces, targetProvince: CoastProvince) if transitionProvinces.forall({
+            transitionProvince =>
+              transitionProvince.isInstanceOf[WaterProvince]
+          }) =>
+            (transitionProvinces :+ targetProvince).foldLeft(Some(sourceProvince): Option[Province])({
+              case (Some(thisProvince), thatProvince) =>
+                if (thisProvince.hasWay(thatProvince.provinceId)) Some(thatProvince) else None
+              case _ =>
+                None
+            }).isDefined
+          case _ =>
+            false
+        }
+      case _ =>
+        false
+    }
+  }
+
+  def hasConvoy(sourceProvince: ProvinceId, targetProvince: ProvinceId): Boolean = true // TODO
 
 }
