@@ -5,6 +5,13 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class ProvinceSpec extends FlatSpec with Matchers {
 
+  "All provinces" should "have the correct provinceId" in {
+    Province.provinces.foreach({
+      case (provinceId, province) =>
+        provinceId should be (province.provinceId)
+    })
+  }
+
   "All land routes of land provinces" should "be continuous and bidirectional" in {
     Province.provinces.collect({
       case (_, province: LandProvince) =>

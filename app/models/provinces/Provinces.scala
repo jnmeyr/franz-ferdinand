@@ -1,5 +1,6 @@
 package models.provinces
 
+import models.countries.Country
 import models.countries.CountryId._
 import models.provinces.ProvinceId._
 import models.units.{Army, Fleet, _}
@@ -140,5 +141,27 @@ object Provinces {
     Con   -> (Some(Turkey),  Some(Army(Turkey)),   None),
     Smy   -> (Some(Turkey),  Some(Army(Turkey)),   None)
   )
+
+  def provinceCount(provinces: Provinces, country: Country): Int = {
+    provinces.values.count({
+      case (Some(countryId), _, _) if countryId == country.countryId =>
+        true
+      case _ =>
+        false
+    })
+  }
+
+  def unitCount(provinces: Provinces, country: Country): Int = {
+    provinces.values.count({
+      case (_, Some(unit), _) if unit.countryId == country.countryId =>
+        true
+      case _ =>
+        false
+    })
+  }
+
+  def provinceUnitDifference(provinces: Provinces, country: Country): Int = {
+    provinceCount(provinces, country) - unitCount(provinces, country)
+  }
 
 }
