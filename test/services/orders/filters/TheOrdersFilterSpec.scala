@@ -7,7 +7,8 @@ import models.provinces.Provinces
 import models.times.Phase._
 import models.times.Season._
 import models.times.Time
-import models.units.{Army, Fleet, UnitKind}
+import models.units._
+import models.units.UnitKind._
 import org.scalatest.{FlatSpec, Matchers}
 
 class TheOrdersFilterSpec extends FlatSpec with Matchers {
@@ -25,7 +26,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (own army in land province) hold orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -39,7 +40,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (own army in coast province) hold orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -53,7 +54,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (own fleet in coast province) hold orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -67,7 +68,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (own fleet in water province) hold orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -93,7 +94,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign unit in province) hold orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(England)), None)
+      Vie -> (None, Some(ArmyUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -107,7 +108,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter hold orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -121,7 +122,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter hold orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -135,7 +136,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from land to land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -149,7 +150,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from land to coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -163,7 +164,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from coast to land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -177,7 +178,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from coast to coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -191,7 +192,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from coast to coast province over water provinces) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -205,7 +206,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from coast to coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -219,7 +220,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from coast to water province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -233,7 +234,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from water to coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -247,7 +248,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from water to water province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -273,7 +274,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign unit in province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(England)), None)
+      Vie -> (None, Some(ArmyUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -287,7 +288,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to water province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -301,7 +302,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to coast province over land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -315,7 +316,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to coast province over coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -329,7 +330,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from land to unreachable land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -343,7 +344,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from land to unreachable coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -357,7 +358,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to unreachable land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -371,7 +372,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to unreachable coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -385,7 +386,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from coast to coast province over unreachable water provinces) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -399,7 +400,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from coast to land province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -413,7 +414,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from coast to coast province over water provinces) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -427,7 +428,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from coast to unreachable coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -441,7 +442,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from coast to unreachable water province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -455,7 +456,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from water to unreachable coast province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -469,7 +470,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from water to unreachable water province) move orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -483,7 +484,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter move orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -497,7 +498,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter move orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -511,7 +512,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -537,7 +538,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign unit in province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(England)), None)
+      Vie -> (None, Some(ArmyUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -551,7 +552,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in land province from land to land province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -565,7 +566,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in land province from land to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -579,7 +580,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in land province from coast to land province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(Austria)), None)
+      Vie -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -593,7 +594,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in land province from coast to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tyr -> (None, Some(Army(Austria)), None)
+      Tyr -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -607,7 +608,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in coast province from land to land province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -621,7 +622,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in coast province from land to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -635,7 +636,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in coast province from coast to land province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -649,7 +650,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army in coast province from coast to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -663,7 +664,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in coast province from coast to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Alb -> (None, Some(Fleet(Austria)), None)
+      Alb -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -677,7 +678,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in coast province from coast to water province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Alb -> (None, Some(Fleet(Austria)), None)
+      Alb -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -691,7 +692,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in coast province from water to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Alb -> (None, Some(Fleet(Austria)), None)
+      Alb -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -705,7 +706,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in coast province from water to water province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Alb -> (None, Some(Fleet(Austria)), None)
+      Alb -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -719,7 +720,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in water province from coast to unreachable coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -733,7 +734,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in water province from coast to water province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -747,7 +748,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in water province from water to coast province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -761,7 +762,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet in water province from water to water province) convoy orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Ion -> (None, Some(Fleet(Austria)), None)
+      Ion -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -775,7 +776,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter convoy orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -789,7 +790,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter convoy orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -803,7 +804,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -817,7 +818,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army from coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -831,7 +832,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army to land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -845,7 +846,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army to coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -859,7 +860,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Ven -> (None, Some(Fleet(Austria)), None)
+      Ven -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -873,7 +874,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet from water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -887,7 +888,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet to coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Ven -> (None, Some(Fleet(Austria)), None)
+      Ven -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -901,7 +902,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet to water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Ven -> (None, Some(Fleet(Austria)), None)
+      Ven -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -927,7 +928,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign unit in province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Ven -> (None, Some(Fleet(England)), None)
+      Ven -> (None, Some(FleetUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -941,7 +942,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from unreachable land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -955,7 +956,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from unreachable coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -969,7 +970,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army from water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -983,7 +984,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to unreachable land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -997,7 +998,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to unreachable coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Bud -> (None, Some(Army(Austria)), None)
+      Bud -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1011,7 +1012,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(Austria)), None)
+      Tri -> (None, Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1025,7 +1026,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1039,7 +1040,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from unreachable coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1053,7 +1054,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet from unreachable water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1067,7 +1068,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to land province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1081,7 +1082,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to unreachable coast province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1095,7 +1096,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to unreachable water province) support orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1109,7 +1110,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter support orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1123,7 +1124,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter support orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1137,7 +1138,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter retreat orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1151,7 +1152,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army to land target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(England)), Some(Army(Austria)))
+      Vie -> (None, Some(ArmyUnit(England)), Some(ArmyUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1165,7 +1166,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (army to coast target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (None, Some(Army(England)), Some(Army(Austria)))
+      Vie -> (None, Some(ArmyUnit(England)), Some(ArmyUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1179,7 +1180,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet to coast target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1193,7 +1194,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid (fleet to water target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1207,7 +1208,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (no dislodged unit in province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), None)
+      Adr -> (None, Some(FleetUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1221,7 +1222,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign dislodged unit in province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), Some(Fleet(England)))
+      Adr -> (None, Some(FleetUnit(Austria)), Some(FleetUnit(England)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1235,7 +1236,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to unreachable land target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(England)), Some(Army(Austria)))
+      Tri -> (None, Some(ArmyUnit(England)), Some(ArmyUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1249,7 +1250,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to unreachable coast target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(England)), Some(Army(Austria)))
+      Tri -> (None, Some(ArmyUnit(England)), Some(ArmyUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1263,7 +1264,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to unreachable coast target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1277,7 +1278,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to unreachable water target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1291,7 +1292,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (army to water target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Army(England)), Some(Army(Austria)))
+      Tri -> (None, Some(ArmyUnit(England)), Some(ArmyUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1305,7 +1306,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (fleet to land target province) retreat orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tri -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Tri -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1319,7 +1320,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter retreat orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1333,7 +1334,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter disband orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1347,7 +1348,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid disband orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), Some(Fleet(Austria)))
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1361,7 +1362,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (no dislodged unit in province) disband orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), None)
+      Adr -> (None, Some(FleetUnit(England)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1375,7 +1376,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign dislodged unit in province) disband orders during a resolution phase" in {
     val time = Time(1901, Spring, Resolution)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), Some(Fleet(England)))
+      Adr -> (None, Some(FleetUnit(Austria)), Some(FleetUnit(England)))
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1389,7 +1390,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to keep valid disband orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1403,7 +1404,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (supply >= |units|) disband orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (Some(Austria), Some(Army(Austria)), None)
+      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1418,7 +1419,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
       Adr -> (None, None, None),
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1432,8 +1433,8 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (foreign unit in province) disband orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(Fleet(England)), None),
-      Tri -> (None, Some(Fleet(Austria)), None)
+      Adr -> (None, Some(FleetUnit(England)), None),
+      Tri -> (None, Some(FleetUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
@@ -1451,7 +1452,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Army)
+        BuildOrder(Vie, Army)
       )
     )
 
@@ -1465,7 +1466,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Army)
+        BuildOrder(Vie, Army)
       )
     )
 
@@ -1479,7 +1480,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Army)
+        BuildOrder(Vie, Army)
       )
     )
 
@@ -1493,7 +1494,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Tri, UnitKind.Army)
+        BuildOrder(Tri, Army)
       )
     )
 
@@ -1507,7 +1508,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Tri, UnitKind.Fleet)
+        BuildOrder(Tri, Fleet)
       )
     )
 
@@ -1517,13 +1518,13 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (supply <= |units|) build orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Tyr -> (None, Some(Army(Austria)), None),
+      Tyr -> (None, Some(ArmyUnit(Austria)), None),
       Tri -> (Some(Austria), None, None),
-      Vie -> (Some(Austria), Some(Army(Austria)), None)
+      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Tri, UnitKind.Army)
+        BuildOrder(Tri, Army)
       )
     )
 
@@ -1537,7 +1538,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Tyr, UnitKind.Army)
+        BuildOrder(Tyr, Army)
       )
     )
 
@@ -1551,7 +1552,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Ber, UnitKind.Army)
+        BuildOrder(Ber, Army)
       )
     )
 
@@ -1565,7 +1566,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Army)
+        BuildOrder(Vie, Army)
       )
     )
 
@@ -1576,11 +1577,11 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
       Tri -> (Some(Austria), None, None),
-      Vie -> (Some(Austria), Some(Army(Austria)), None)
+      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Army)
+        BuildOrder(Vie, Army)
       )
     )
 
@@ -1594,7 +1595,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        BuildOrder(Vie, UnitKind.Fleet)
+        BuildOrder(Vie, Fleet)
       )
     )
 
@@ -1684,7 +1685,7 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
   "The orders filter" should "be able to filter invalid (own unit in province) waive orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (Some(Austria), Some(Army(Austria)), None)
+      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(

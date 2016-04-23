@@ -83,6 +83,7 @@ class ProvinceSpec extends FlatSpec with Matchers {
     Province.isConvoy(List(Vie, Tri)) should be (false)
     Province.isConvoy(List(Vie, Adr, Apu)) should be (false)
     Province.isConvoy(List(Vie, Adr, Ion, Gre)) should be (false)
+    Province.isConvoy(List(Vie, Adr, Alb, Ion, Gre)) should be (false)
   }
 
   "Coast provinces" should "be able to have convoys" in {
@@ -91,6 +92,7 @@ class ProvinceSpec extends FlatSpec with Matchers {
     Province.isConvoy(List(Tri, Alb)) should be (false)
     Province.isConvoy(List(Tri, Adr, Apu)) should be (true)
     Province.isConvoy(List(Tri, Adr, Ion, Gre)) should be (true)
+    Province.isConvoy(List(Tri, Adr, Alb, Ion, Gre)) should be (false)
   }
 
   "Water provinces" should "not have a convoy" in {
@@ -99,6 +101,7 @@ class ProvinceSpec extends FlatSpec with Matchers {
     Province.isConvoy(List(Tys, Rom)) should be (false)
     Province.isConvoy(List(Tys, Adr, Apu)) should be (false)
     Province.isConvoy(List(Tys, Adr, Ion, Gre)) should be (false)
+    Province.isConvoy(List(Tys, Adr, Alb, Ion, Gre)) should be (false)
   }
 
 }

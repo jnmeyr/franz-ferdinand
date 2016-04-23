@@ -2,6 +2,8 @@ package models.provinces
 
 import models.provinces.ProvinceId._
 
+import scala.language.implicitConversions
+
 sealed trait Province {
 
   def provinceId: ProvinceId
@@ -12,22 +14,24 @@ sealed trait Province {
 
   def ways: List[ProvinceId]
 
-  override def equals(that: Any) = that match {
-    case that: Province =>
-      (this.provinceId, that.provinceId) match {
-        case (Stp, StpNc) | (StpNc, Stp) | (Stp, StpSc) | (StpSc, Stp) | (StpNc, StpSc) | (StpSc, StpNc) =>
-          true
-        case (Spa, SpaNc) | (SpaNc, Spa) | (Spa, SpaSc) | (SpaSc, Spa) | (SpaNc, SpaSc) | (SpaSc, SpaNc) =>
-          true
-        case (Bul, BulEc) | (BulEc, Bul) | (Bul, BulSc) | (BulSc, Bul) | (BulEc, BulSc) | (BulSc, BulEc) =>
-          true
-        case (thisProvinceId, thatProvinceId) if thisProvinceId == thatProvinceId =>
-          true
-        case _ =>
-          false
-      }
-    case _ =>
-      false
+  override def equals(that: Any) = {
+    that match {
+      case that: Province =>
+        (this.provinceId, that.provinceId) match {
+          case (Stp, StpNc) | (StpNc, Stp) | (Stp, StpSc) | (StpSc, Stp) | (StpNc, StpSc) | (StpSc, StpNc) =>
+            true
+          case (Spa, SpaNc) | (SpaNc, Spa) | (Spa, SpaSc) | (SpaSc, Spa) | (SpaNc, SpaSc) | (SpaSc, SpaNc) =>
+            true
+          case (Bul, BulEc) | (BulEc, Bul) | (Bul, BulSc) | (BulSc, Bul) | (BulEc, BulSc) | (BulSc, BulEc) =>
+            true
+          case (thisProvinceId, thatProvinceId) if thisProvinceId == thatProvinceId =>
+            true
+          case _ =>
+            false
+        }
+      case _ =>
+        false
+    }
   }
 
   def hasRoute(targetProvinceId: ProvinceId): Boolean = routes.contains(targetProvinceId)
@@ -138,19 +142,19 @@ object Province {
     Yor   -> CoastProvince(Yor,   false, List(Edi, Lon, Lvp, Wal),                 List(Edi, Lon, Nth))
   )
 
-  def province(provinceId: ProvinceId): Province = provinces.get(provinceId).get
+  implicit def province(provinceId: ProvinceId): Province = provinces.get(provinceId).get
 
-  def isConvoy(provinces: List[ProvinceId]): Boolean = {
+  def isConvoy(provinces: List[Province]): Boolean = {
     provinces match {
       case sourceProvince +: transitionProvinces :+ targetProvince if transitionProvinces.nonEmpty =>
-        (Province.province(sourceProvince), transitionProvinces.map(Province.province), Province.province(targetProvince)) match {
+        (sourceProvince, transitionProvinces, targetProvince) match {
           case (sourceProvince: CoastProvince, transitionProvinces, targetProvince: CoastProvince) if transitionProvinces.forall({
             transitionProvince =>
               transitionProvince.isInstanceOf[WaterProvince]
           }) =>
             (transitionProvinces :+ targetProvince).foldLeft(Some(sourceProvince): Option[Province])({
               case (Some(thisProvince), thatProvince) =>
-                if (thisProvince.hasWay(thatProvince.provinceId)) Some(thatProvince) else None
+                if (thisProvince.hasWay(thatProvince)) Some(thatProvince) else None
               case _ =>
                 None
             }).isDefined
@@ -162,6 +166,13 @@ object Province {
     }
   }
 
-  def hasConvoy(sourceProvince: ProvinceId, targetProvince: ProvinceId): Boolean = true // TODO
+  def hasConvoy(province: Province, sourceProvince: Province, targetProvince: Province): Boolean = {
+    (province, sourceProvince, targetProvince) match {
+      case (province: WaterProvince, sourceProvince: CoastProvince, targetProvince: CoastProvince) =>
+        true // TODO
+      case _ =>
+        false
+    }
+  }
 
 }

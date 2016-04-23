@@ -13,8 +13,6 @@ import services.orders.interpreters.OrdersInterpreter
 import services.orders.transpilers.OrdersTranspiler
 import services.stores.Store
 
-import scala.language.implicitConversions
-
 @Singleton
 class FranzFerdinand @Inject() (store: Store, ordersTranspiler: OrdersTranspiler, ordersInterpreter: OrdersInterpreter) extends Controller {
 

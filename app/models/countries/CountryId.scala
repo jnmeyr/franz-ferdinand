@@ -2,6 +2,8 @@ package models.countries
 
 import play.api.libs.json._
 
+import scala.language.implicitConversions
+
 object CountryId extends Enumeration {
 
   type CountryId = Value
@@ -13,6 +15,8 @@ object CountryId extends Enumeration {
   val Italy   = Value("I")
   val Russia  = Value("R")
   val Turkey  = Value("T")
+
+  implicit def countryId(country: Country): CountryId = country.countryId
 
   implicit val countryIdFormat: Format[CountryId] = new Format[CountryId] {
 

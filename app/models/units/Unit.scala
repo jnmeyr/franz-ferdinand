@@ -1,7 +1,7 @@
 package models.units
 
 import models.countries.CountryId.CountryId
-import models.units.UnitKind.UnitKind
+import models.units.UnitKind._
 import play.api.libs.json._
 
 sealed trait Unit {
@@ -10,27 +10,27 @@ sealed trait Unit {
 
 }
 
-case class Army(countryId: CountryId) extends Unit
+case class ArmyUnit(countryId: CountryId) extends Unit
 
-case class Fleet(countryId: CountryId) extends Unit
+case class FleetUnit(countryId: CountryId) extends Unit
 
 object Unit {
 
   def apply(unitKind: UnitKind, countryId: CountryId): Unit = {
     unitKind match {
-      case UnitKind.Army =>
-        Army(countryId)
-      case UnitKind.Fleet =>
-        Fleet(countryId)
+      case Army =>
+        ArmyUnit(countryId)
+      case Fleet =>
+        FleetUnit(countryId)
     }
   }
 
   def unapply(unit: Unit): (UnitKind, CountryId) = {
     unit match {
-      case Army(countryId) =>
-        (UnitKind.Army, countryId)
-      case Fleet(countryId) =>
-        (UnitKind.Fleet, countryId)
+      case ArmyUnit(countryId) =>
+        (Army, countryId)
+      case FleetUnit(countryId) =>
+        (Fleet, countryId)
     }
   }
 

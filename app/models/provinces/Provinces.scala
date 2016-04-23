@@ -3,7 +3,7 @@ package models.provinces
 import models.countries.Country
 import models.countries.CountryId._
 import models.provinces.ProvinceId._
-import models.units.{Army, Fleet, _}
+import models.units.{ArmyUnit, FleetUnit, _}
 import play.api.libs.json._
 
 object Provinces {
@@ -111,35 +111,35 @@ object Provinces {
   )
 
   val startProvinces: Provinces = emptyProvinces ++ Map(
-    Bud   -> (Some(Austria), Some(Army(Austria)),  None),
-    Tri   -> (Some(Austria), Some(Fleet(Austria)), None),
-    Vie   -> (Some(Austria), Some(Army(Austria)),  None),
+    Bud   -> (Some(Austria), Some(ArmyUnit(Austria)),  None),
+    Tri   -> (Some(Austria), Some(FleetUnit(Austria)), None),
+    Vie   -> (Some(Austria), Some(ArmyUnit(Austria)),  None),
 
-    Edi   -> (Some(England), Some(Fleet(England)), None),
-    Lon   -> (Some(England), Some(Fleet(England)), None),
-    Lvp   -> (Some(England), Some(Army(England)),  None),
+    Edi   -> (Some(England), Some(FleetUnit(England)), None),
+    Lon   -> (Some(England), Some(FleetUnit(England)), None),
+    Lvp   -> (Some(England), Some(ArmyUnit(England)),  None),
 
-    Bre   -> (Some(France),  Some(Fleet(France)),  None),
-    Mar   -> (Some(France),  Some(Army(France)),   None),
-    Par   -> (Some(France),  Some(Army(France)),   None),
+    Bre   -> (Some(France),  Some(FleetUnit(France)),  None),
+    Mar   -> (Some(France),  Some(ArmyUnit(France)),   None),
+    Par   -> (Some(France),  Some(ArmyUnit(France)),   None),
 
-    Ber   -> (Some(Germany), Some(Army(Germany)),  None),
-    Kie   -> (Some(Germany), Some(Fleet(Germany)), None),
-    Mun   -> (Some(Germany), Some(Army(Germany)),  None),
+    Ber   -> (Some(Germany), Some(ArmyUnit(Germany)),  None),
+    Kie   -> (Some(Germany), Some(FleetUnit(Germany)), None),
+    Mun   -> (Some(Germany), Some(ArmyUnit(Germany)),  None),
 
-    Rom   -> (Some(Italy),   Some(Army(Italy)),    None),
-    Nap   -> (Some(Italy),   Some(Fleet(Italy)),   None),
-    Ven   -> (Some(Italy),   Some(Army(Italy)),    None),
+    Rom   -> (Some(Italy),   Some(ArmyUnit(Italy)),    None),
+    Nap   -> (Some(Italy),   Some(FleetUnit(Italy)),   None),
+    Ven   -> (Some(Italy),   Some(ArmyUnit(Italy)),    None),
 
-    Mos   -> (Some(Russia),  Some(Army(Russia)),   None),
-    Sev   -> (Some(Russia),  Some(Fleet(Russia)),  None),
+    Mos   -> (Some(Russia),  Some(ArmyUnit(Russia)),   None),
+    Sev   -> (Some(Russia),  Some(FleetUnit(Russia)),  None),
     Stp   -> (Some(Russia),  None,                 None),
-    StpSc -> (None,          Some(Fleet(Russia)),  None),
-    War   -> (Some(Russia),  Some(Army(Russia)),   None),
+    StpSc -> (None,          Some(FleetUnit(Russia)),  None),
+    War   -> (Some(Russia),  Some(ArmyUnit(Russia)),   None),
 
-    Ank   -> (Some(Turkey),  Some(Fleet(Turkey)),  None),
-    Con   -> (Some(Turkey),  Some(Army(Turkey)),   None),
-    Smy   -> (Some(Turkey),  Some(Army(Turkey)),   None)
+    Ank   -> (Some(Turkey),  Some(FleetUnit(Turkey)),  None),
+    Con   -> (Some(Turkey),  Some(ArmyUnit(Turkey)),   None),
+    Smy   -> (Some(Turkey),  Some(ArmyUnit(Turkey)),   None)
   )
 
   def provinceCount(provinces: Provinces, country: Country): Int = {

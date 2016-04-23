@@ -2,6 +2,8 @@ package models.provinces
 
 import play.api.libs.json._
 
+import scala.language.implicitConversions
+
 object ProvinceId extends Enumeration {
 
   type ProvinceId = Value
@@ -87,6 +89,8 @@ object ProvinceId extends Enumeration {
   val War   = Value("War")
   val Wes   = Value("Wes")
   val Yor   = Value("Yor")
+
+  implicit def provinceId(province: Province): ProvinceId = province.provinceId
 
   implicit val provinceIdFormat: Format[ProvinceId] = new Format[ProvinceId] {
 
