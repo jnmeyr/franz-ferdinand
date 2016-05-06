@@ -4,7 +4,7 @@ import models.countries.CountryId._
 
 object Orders {
 
-  type Orders = Map[CountryId, List[Order]]
+  type Orders = Map[CountryId, List[Order]] // TODO why not set of orders?
 
   val orders: Orders = Map(
     Austria -> Nil,

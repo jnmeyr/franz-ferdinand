@@ -1,9 +1,9 @@
 package services.orders.transpilers
 
 import org.scalatest.{FlatSpec, Matchers}
-import play.api.libs.json.{JsString, JsNull, JsObject, JsValue}
-import services.orders.parsers.TheOrdersParser
-import services.orders.scanners.TheOrdersScanner
+import play.api.libs.json.{JsNull, JsObject, JsString, JsValue}
+import services.orders.transpilers.parsers.TheOrdersParser
+import services.orders.transpilers.scanners.TheOrdersScanner
 
 class TheOrdersTranspilerSpec extends FlatSpec with Matchers {
 
@@ -18,6 +18,10 @@ class TheOrdersTranspilerSpec extends FlatSpec with Matchers {
     "r" -> JsString(""),
     "t" -> JsString("")
   ))
+
+  "The orders transpiler" should "be able to transpile correct orders" in {
+    theOrdersTranspiler(orders) shouldNot be (None)
+  }
 
   val noOrders: JsValue = JsNull
 
@@ -41,10 +45,6 @@ class TheOrdersTranspilerSpec extends FlatSpec with Matchers {
     "r" -> JsString(""),
     "t" -> JsNull
   ))
-
-  "The orders transpiler" should "be able to transpile correct orders" in {
-    theOrdersTranspiler(orders) should not be (None)
-  }
 
   "The orders transpiler" should "not be able to transpile wrong orders" in {
     theOrdersTranspiler(noOrders) should be (None)

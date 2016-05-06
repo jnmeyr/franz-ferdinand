@@ -9,6 +9,6 @@ import models.times.Time
 @ImplementedBy(classOf[TheOrdersInterpreter])
 trait OrdersInterpreter {
 
-  def apply(time: Time, provinces: Provinces, orders: Orders): Provinces
+  def apply(time: Time, provinces: Provinces, orders: Orders): Option[Provinces]
 
 }

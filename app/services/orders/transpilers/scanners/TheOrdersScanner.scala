@@ -1,4 +1,4 @@
-package services.orders.scanners
+package services.orders.transpilers.scanners
 
 import models.orders.OrderKind._
 import models.provinces.ProvinceId

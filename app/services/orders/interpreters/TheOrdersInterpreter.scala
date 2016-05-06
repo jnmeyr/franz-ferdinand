@@ -6,6 +6,6 @@ import models.times.Time
 
 class TheOrdersInterpreter extends OrdersInterpreter {
 
-  override def apply(time: Time, provinces: Provinces, orders: Orders): Provinces = provinces
+  override def apply(time: Time, provinces: Provinces, orders: Orders): Option[Provinces] = Some(provinces)
 
 }

@@ -1,4 +1,4 @@
-package services.orders.filters
+package services.orders.analyzers.filters
 
 import models.countries.CountryId._
 import models.orders._
@@ -1135,6 +1135,120 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
+  "The orders filter" should "be able to filter disband orders during a diplomacy phase" in {
+    val time = Time(1901, Spring, Diplomacy)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to keep valid disband orders during a resolution phase" in {
+    val time = Time(1901, Spring, Resolution)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (no dislodged unit in province) disband orders during a resolution phase" in {
+    val time = Time(1901, Spring, Resolution)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(England)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (foreign dislodged unit in province) disband orders during a resolution phase" in {
+    val time = Time(1901, Spring, Resolution)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(Austria)), Some(FleetUnit(England)))
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to keep valid disband orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (supply >= |units|) disband orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Vie)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (no unit in province) disband orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, None, None),
+      Tri -> (None, Some(FleetUnit(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (foreign unit in province) disband orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Adr -> (None, Some(FleetUnit(England)), None),
+      Tri -> (None, Some(FleetUnit(Austria)), None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        DisbandOrder(Adr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
   "The orders filter" should "be able to filter retreat orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
     val provinces = Provinces.emptyProvinces ++ Map(
@@ -1331,114 +1445,94 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  "The orders filter" should "be able to filter disband orders during a diplomacy phase" in {
+  "The orders filter" should "be able to filter waive orders during a diplomacy phase" in {
     val time = Time(1901, Spring, Diplomacy)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(Austria)), None)
-    )
+    val provinces = Provinces.emptyProvinces
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        DisbandOrder(Adr)
+        WaiveOrder(Adr)
       )
     )
 
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  "The orders filter" should "be able to keep valid disband orders during a resolution phase" in {
-    val time = Time(1901, Spring, Resolution)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(England)), Some(FleetUnit(Austria)))
-    )
+  "The orders filter" should "be able to filter waive orders during a resolution phase" in {
+    val time = Time(1901, Fall, Resolution)
+    val provinces = Provinces.emptyProvinces
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        DisbandOrder(Adr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (no dislodged unit in province) disband orders during a resolution phase" in {
-    val time = Time(1901, Spring, Resolution)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(England)), None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        DisbandOrder(Adr)
+        WaiveOrder(Adr)
       )
     )
 
     theOrdersFilter(time, provinces, orders) should be (Orders.orders)
   }
 
-  "The orders filter" should "be able to filter invalid (foreign dislodged unit in province) disband orders during a resolution phase" in {
-    val time = Time(1901, Spring, Resolution)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(Austria)), Some(FleetUnit(England)))
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        DisbandOrder(Adr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to keep valid disband orders during an adjustment phase" in {
+  "The orders filter" should "be able to keep valid waive orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(Austria)), None)
+      Vie -> (Some(Austria), None, None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        DisbandOrder(Adr)
+        WaiveOrder(Vie)
       )
     )
 
     theOrdersFilter(time, provinces, orders) should be (orders)
   }
 
-  "The orders filter" should "be able to filter invalid (supply >= |units|) disband orders during an adjustment phase" in {
+  "The orders filter" should "be able to filter invalid (province has no supply) waive orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Tyr -> (Some(Austria), None, None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        WaiveOrder(Tyr)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (province is no home province) waive orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Ber -> (Some(Austria), None, None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        WaiveOrder(Ber)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (province is foreign) waive orders during an adjustment phase" in {
+    val time = Time(1901, Fall, Adjustment)
+    val provinces = Provinces.emptyProvinces ++ Map(
+      Vie -> (Some(England), None, None)
+    )
+    val orders = Orders.orders ++ Map(
+      Austria -> List(
+        WaiveOrder(Vie)
+      )
+    )
+
+    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
+  }
+
+  "The orders filter" should "be able to filter invalid (own unit in province) waive orders during an adjustment phase" in {
     val time = Time(1901, Fall, Adjustment)
     val provinces = Provinces.emptyProvinces ++ Map(
       Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
     )
     val orders = Orders.orders ++ Map(
       Austria -> List(
-        DisbandOrder(Vie)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (no unit in province) disband orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, None, None),
-      Tri -> (None, Some(FleetUnit(Austria)), None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        DisbandOrder(Adr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (foreign unit in province) disband orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Adr -> (None, Some(FleetUnit(England)), None),
-      Tri -> (None, Some(FleetUnit(Austria)), None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        DisbandOrder(Adr)
+        WaiveOrder(Vie)
       )
     )
 
@@ -1596,100 +1690,6 @@ class TheOrdersFilterSpec extends FlatSpec with Matchers {
     val orders = Orders.orders ++ Map(
       Austria -> List(
         BuildOrder(Vie, Fleet)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter waive orders during a diplomacy phase" in {
-    val time = Time(1901, Spring, Diplomacy)
-    val provinces = Provinces.emptyProvinces
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Adr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter waive orders during a resolution phase" in {
-    val time = Time(1901, Fall, Resolution)
-    val provinces = Provinces.emptyProvinces
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Adr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to keep valid waive orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (Some(Austria), None, None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Vie)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (province has no supply) waive orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Tyr -> (Some(Austria), None, None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Tyr)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (province is no home province) waive orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Ber -> (Some(Austria), None, None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Ber)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (province is foreign) waive orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (Some(England), None, None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Vie)
-      )
-    )
-
-    theOrdersFilter(time, provinces, orders) should be (Orders.orders)
-  }
-
-  "The orders filter" should "be able to filter invalid (own unit in province) waive orders during an adjustment phase" in {
-    val time = Time(1901, Fall, Adjustment)
-    val provinces = Provinces.emptyProvinces ++ Map(
-      Vie -> (Some(Austria), Some(ArmyUnit(Austria)), None)
-    )
-    val orders = Orders.orders ++ Map(
-      Austria -> List(
-        WaiveOrder(Vie)
       )
     )
 

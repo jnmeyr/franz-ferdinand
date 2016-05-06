@@ -1,10 +1,10 @@
-package services.orders.parsers
+package services.orders.transpilers.parsers
 
 import models.orders.OrderKind._
 import models.orders._
 import models.provinces.ProvinceId._
 import models.units.UnitKind._
-import services.orders.scanners._
+import services.orders.transpilers.scanners._
 
 class TheOrdersParser extends OrdersParser {
 
@@ -63,23 +63,23 @@ class TheOrdersParser extends OrdersParser {
     case provinceId ~ sourceProvinceId ~ targetProvinceId => SupportOrder(provinceId, sourceProvinceId, targetProvinceId)
   }
 
-  private val retreatOrderParser: Parser[RetreatOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Retreat)) ~ provinceIdParser ^^ {
-    case provinceId ~ targetProvinceId => RetreatOrder(provinceId, targetProvinceId)
-  }
-
   private val disbandOrderParser: Parser[DisbandOrder] = unitKindParser.? ~> provinceIdParser <~ orderKindParser(Disband) ^^ {
     case provinceId => DisbandOrder(provinceId)
   }
 
-  private val buildOrderParser: Parser[BuildOrder] = (provinceIdParser <~ orderKindParser(Build)) ~ unitKindParser ^^ {
-    case provinceId ~ unitKind => BuildOrder(provinceId, unitKind)
+  private val retreatOrderParser: Parser[RetreatOrder] = (unitKindParser.? ~> provinceIdParser <~ orderKindParser(Retreat)) ~ provinceIdParser ^^ {
+    case provinceId ~ targetProvinceId => RetreatOrder(provinceId, targetProvinceId)
   }
 
   private val waiveOrderParser: Parser[WaiveOrder] = (provinceIdParser <~ orderKindParser(Waive)) ^^ {
     case provinceId => WaiveOrder(provinceId)
   }
 
-  private val orderParser: Parser[Order] = holdOrderParser | moveOrderParser | convoyOrderParser | supportOrderParser | retreatOrderParser | disbandOrderParser | buildOrderParser | waiveOrderParser
+  private val buildOrderParser: Parser[BuildOrder] = (provinceIdParser <~ orderKindParser(Build)) ~ unitKindParser ^^ {
+    case provinceId ~ unitKind => BuildOrder(provinceId, unitKind)
+  }
+
+  private val orderParser: Parser[Order] = holdOrderParser | moveOrderParser | convoyOrderParser | supportOrderParser | disbandOrderParser | retreatOrderParser | waiveOrderParser | buildOrderParser
 
   private val ordersParser: Parser[List[Order]] = orderParser.*
 

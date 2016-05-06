@@ -1,4 +1,4 @@
-package services.orders.scanners
+package services.orders.transpilers.scanners
 
 import com.google.inject.ImplementedBy
 

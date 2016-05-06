@@ -6,13 +6,23 @@ import play.api.libs.json._
 
 sealed trait Unit {
 
+  def unitKind: UnitKind
+
   def countryId: CountryId
 
 }
 
-case class ArmyUnit(countryId: CountryId) extends Unit
+case class ArmyUnit(countryId: CountryId) extends Unit {
 
-case class FleetUnit(countryId: CountryId) extends Unit
+  val unitKind = Army
+
+}
+
+case class FleetUnit(countryId: CountryId) extends Unit {
+
+  val unitKind = Fleet
+
+}
 
 object Unit {
 

@@ -1,12 +1,12 @@
-package services.orders.filters
+package services.orders.analyzers.mappers
 
 import com.google.inject.ImplementedBy
 import models.orders.Orders.Orders
 import models.provinces.Provinces.Provinces
 import models.times.Time
 
-@ImplementedBy(classOf[TheOrdersFilter])
-trait OrdersFilter {
+@ImplementedBy(classOf[TheOrdersMapper])
+trait OrdersMapper {
 
   def apply(time: Time, provinces: Provinces, orders: Orders): Orders
 

@@ -1,8 +1,8 @@
-package services.orders.parsers
+package services.orders.transpilers.parsers
 
 import com.google.inject.ImplementedBy
 import models.orders.Order
-import services.orders.scanners.OrderToken
+import services.orders.transpilers.scanners.OrderToken
 
 import scala.util.parsing.combinator.Parsers
 

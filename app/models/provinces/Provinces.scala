@@ -133,7 +133,7 @@ object Provinces {
 
     Mos   -> (Some(Russia),  Some(ArmyUnit(Russia)),   None),
     Sev   -> (Some(Russia),  Some(FleetUnit(Russia)),  None),
-    Stp   -> (Some(Russia),  None,                 None),
+    Stp   -> (Some(Russia),  None,                     None),
     StpSc -> (None,          Some(FleetUnit(Russia)),  None),
     War   -> (Some(Russia),  Some(ArmyUnit(Russia)),   None),
 
@@ -142,26 +142,37 @@ object Provinces {
     Smy   -> (Some(Turkey),  Some(ArmyUnit(Turkey)),   None)
   )
 
-  def provinceCount(provinces: Provinces, country: Country): Int = {
-    provinces.values.count({
-      case (Some(countryId), _, _) if countryId == country.countryId =>
+  def countryProvinces(provinces: Provinces, country: Country, supply: Boolean = false): Provinces = {
+    provinces.filter({
+      case (provinceId, (Some(countryId), _, _)) if countryId == country.countryId =>
+        !supply || Province.province(provinceId).supply
+      case _ =>
+        false
+    })
+  }
+
+  def countryUnits(provinces: Provinces, country: Country): Provinces = {
+    provinces.filter({
+      case (_, (_, Some(unit), _)) if unit.countryId == country.countryId =>
         true
       case _ =>
         false
     })
   }
 
-  def unitCount(provinces: Provinces, country: Country): Int = {
-    provinces.values.count({
-      case (_, Some(unit), _) if unit.countryId == country.countryId =>
+  def countryDislodgedUnits(provinces: Provinces, country: Country): Provinces = {
+    provinces.filter({
+      case (_, (_, _, Some(dislodgedUnit))) if dislodgedUnit.countryId == country.countryId =>
         true
       case _ =>
         false
     })
   }
 
-  def provinceUnitDifference(provinces: Provinces, country: Country): Int = {
-    provinceCount(provinces, country) - unitCount(provinces, country)
+  def countryProvincesUnitsDifference(provinces: Provinces, country: Country): Int = {
+    countryProvinces(provinces, country, true).size - countryUnits(provinces, country).size
   }
+
+  def countryProvinceDistance(province: Province, country: Country): Int = 0 // TODO
 
 }
